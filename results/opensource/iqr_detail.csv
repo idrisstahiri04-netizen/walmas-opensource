@@ -1,0 +1,109 @@
+model,profile,criterion,n,rejected,zero_iqr
+Llama31,ENR,Aquifers and Surface Water,20,2,True
+Llama31,ENR,Climate and Weather Conditions,20,0,False
+Llama31,ENR,Ecological Sensitivity,20,5,False
+Llama31,ENR,Geology,20,0,False
+Llama31,ENR,Regulatory Compliance,20,3,False
+Llama31,ENR,Settlements and Urban Centers,20,0,False
+Llama31,ENR,Slope,20,2,False
+Llama31,ENR,Topography,20,0,False
+Llama31,ENR,Urban Development and Infrastructure Location,20,4,False
+Llama31,GGIS,Aquifers and Surface Water,20,2,True
+Llama31,GGIS,Climate and Weather Conditions,20,1,False
+Llama31,GGIS,Ecological Sensitivity,20,0,False
+Llama31,GGIS,Geology,20,2,False
+Llama31,GGIS,Regulatory Compliance,20,3,False
+Llama31,GGIS,Settlements and Urban Centers,20,8,True
+Llama31,GGIS,Slope,20,8,False
+Llama31,GGIS,Topography,20,2,False
+Llama31,GGIS,Urban Development and Infrastructure Location,20,2,False
+Llama31,CEUP,Aquifers and Surface Water,20,1,True
+Llama31,CEUP,Climate and Weather Conditions,20,0,False
+Llama31,CEUP,Ecological Sensitivity,20,0,False
+Llama31,CEUP,Geology,20,0,False
+Llama31,CEUP,Regulatory Compliance,20,9,False
+Llama31,CEUP,Settlements and Urban Centers,20,8,False
+Llama31,CEUP,Slope,20,0,False
+Llama31,CEUP,Topography,20,0,False
+Llama31,CEUP,Urban Development and Infrastructure Location,20,2,False
+Llama31,ES,Aquifers and Surface Water,20,2,True
+Llama31,ES,Climate and Weather Conditions,20,0,False
+Llama31,ES,Ecological Sensitivity,20,5,False
+Llama31,ES,Geology,20,0,False
+Llama31,ES,Regulatory Compliance,20,3,False
+Llama31,ES,Settlements and Urban Centers,20,1,False
+Llama31,ES,Slope,20,0,False
+Llama31,ES,Topography,20,2,False
+Llama31,ES,Urban Development and Infrastructure Location,20,0,False
+Mistral,ENR,Aquifers and Surface Water,20,0,True
+Mistral,ENR,Climate and Weather Conditions,20,0,True
+Mistral,ENR,Ecological Sensitivity,20,0,True
+Mistral,ENR,Geology,20,2,True
+Mistral,ENR,Regulatory Compliance,20,4,True
+Mistral,ENR,Settlements and Urban Centers,20,5,True
+Mistral,ENR,Slope,20,0,False
+Mistral,ENR,Topography,20,0,False
+Mistral,ENR,Urban Development and Infrastructure Location,20,4,True
+Mistral,GGIS,Aquifers and Surface Water,20,0,True
+Mistral,GGIS,Climate and Weather Conditions,20,0,True
+Mistral,GGIS,Ecological Sensitivity,20,2,True
+Mistral,GGIS,Geology,20,3,True
+Mistral,GGIS,Regulatory Compliance,20,5,False
+Mistral,GGIS,Settlements and Urban Centers,20,5,True
+Mistral,GGIS,Slope,20,0,False
+Mistral,GGIS,Topography,20,0,False
+Mistral,GGIS,Urban Development and Infrastructure Location,20,7,False
+Mistral,CEUP,Aquifers and Surface Water,20,0,True
+Mistral,CEUP,Climate and Weather Conditions,20,0,True
+Mistral,CEUP,Ecological Sensitivity,20,0,False
+Mistral,CEUP,Geology,20,0,False
+Mistral,CEUP,Regulatory Compliance,20,0,False
+Mistral,CEUP,Settlements and Urban Centers,20,0,False
+Mistral,CEUP,Slope,20,0,False
+Mistral,CEUP,Topography,20,0,False
+Mistral,CEUP,Urban Development and Infrastructure Location,20,0,False
+Mistral,ES,Aquifers and Surface Water,20,0,True
+Mistral,ES,Climate and Weather Conditions,20,2,True
+Mistral,ES,Ecological Sensitivity,20,1,True
+Mistral,ES,Geology,20,2,True
+Mistral,ES,Regulatory Compliance,20,0,False
+Mistral,ES,Settlements and Urban Centers,20,1,False
+Mistral,ES,Slope,20,0,False
+Mistral,ES,Topography,20,0,False
+Mistral,ES,Urban Development and Infrastructure Location,20,0,False
+Qwen25,ENR,Aquifers and Surface Water,20,0,False
+Qwen25,ENR,Climate and Weather Conditions,20,0,False
+Qwen25,ENR,Ecological Sensitivity,20,7,False
+Qwen25,ENR,Geology,20,0,False
+Qwen25,ENR,Regulatory Compliance,20,0,False
+Qwen25,ENR,Settlements and Urban Centers,20,0,False
+Qwen25,ENR,Slope,20,0,False
+Qwen25,ENR,Topography,20,0,False
+Qwen25,ENR,Urban Development and Infrastructure Location,20,0,False
+Qwen25,GGIS,Aquifers and Surface Water,20,0,False
+Qwen25,GGIS,Climate and Weather Conditions,20,0,False
+Qwen25,GGIS,Ecological Sensitivity,20,0,False
+Qwen25,GGIS,Geology,20,0,False
+Qwen25,GGIS,Regulatory Compliance,20,3,True
+Qwen25,GGIS,Settlements and Urban Centers,20,0,False
+Qwen25,GGIS,Slope,20,0,False
+Qwen25,GGIS,Topography,20,0,False
+Qwen25,GGIS,Urban Development and Infrastructure Location,20,0,False
+Qwen25,CEUP,Aquifers and Surface Water,20,0,False
+Qwen25,CEUP,Climate and Weather Conditions,20,0,False
+Qwen25,CEUP,Ecological Sensitivity,20,0,False
+Qwen25,CEUP,Geology,20,0,False
+Qwen25,CEUP,Regulatory Compliance,20,4,True
+Qwen25,CEUP,Settlements and Urban Centers,20,0,False
+Qwen25,CEUP,Slope,20,0,False
+Qwen25,CEUP,Topography,20,0,False
+Qwen25,CEUP,Urban Development and Infrastructure Location,20,0,False
+Qwen25,ES,Aquifers and Surface Water,20,0,False
+Qwen25,ES,Climate and Weather Conditions,20,0,False
+Qwen25,ES,Ecological Sensitivity,20,0,False
+Qwen25,ES,Geology,20,0,False
+Qwen25,ES,Regulatory Compliance,20,5,True
+Qwen25,ES,Settlements and Urban Centers,20,0,False
+Qwen25,ES,Slope,20,0,False
+Qwen25,ES,Topography,20,0,False
+Qwen25,ES,Urban Development and Infrastructure Location,20,0,False

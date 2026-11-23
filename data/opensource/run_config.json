@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-22T22:10:15.808804+00:00",
+  "ollama_version": "0.40.15",
+  "models": {
+    "Llama31": {
+      "tag": "llama3.1:8b",
+      "digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+      "quantization_level": "Q4_K_M",
+      "parameter_size": "8.0B"
+    },
+    "Qwen25": {
+      "tag": "qwen2.5:7b",
+      "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+      "quantization_level": "Q4_K_M",
+      "parameter_size": "7.6B"
+    },
+    "Mistral": {
+      "tag": "mistral:7b",
+      "digest": "6577803aa9a036369e481d648a2baebb381ebc6e897f2bb9a766a2aa7bfbc1cf",
+      "quantization_level": "Q4_K_M",
+      "parameter_size": "7.2B"
+    }
+  },
+  "temperature": 0.7,
+  "base_seed": 0,
+  "m": 20,
+  "retries": 3,
+  "problem": "the selection of a landfill site",
+  "profiles": {
+    "ENR": "Environment and Natural Resources",
+    "GGIS": "Geography and GIS",
+    "CEUP": "Civil Engineering and Urban Planning",
+    "ES": "Economics and Society"
+  },
+  "criteria": [
+    "Aquifers and Surface Water",
+    "Climate and Weather Conditions",
+    "Ecological Sensitivity",
+    "Geology",
+    "Regulatory Compliance",
+    "Settlements and Urban Centers",
+    "Slope",
+    "Topography",
+    "Urban Development and Infrastructure Location"
+  ],
+  "prompt_template": "You are an expert acting as a {profile} specialist in a spatial multi-criteria decision analysis for {problem}. Considering the criteria {criteria}, assign to each criterion an integer weight from 1 (low importance) to 9 (extreme importance), according to its importance from the point of view of your expertise. Other expert groups will provide their own weights, so your answer must reflect the priorities specific to your field. Reply only with a JSON object mapping each criterion name to its integer weight."
+}

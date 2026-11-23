@@ -1,0 +1,4 @@
+model_a,model_b,rho_w_star,rho_moy_brute
+ChatGPT,Copilot,0.9,0.9
+ChatGPT,Gemini,0.8284591346681658,0.7949860383179369
+Copilot,Gemini,0.9205101496312953,0.9205101496312953

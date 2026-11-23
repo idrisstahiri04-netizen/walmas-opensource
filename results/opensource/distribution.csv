@@ -1,0 +1,109 @@
+model,profile,criterion,mean,std,mean_iqr
+Llama31,ENR,Aquifers and Surface Water,8.1,0.30779350562554625,8.0
+Llama31,ENR,Climate and Weather Conditions,4.2,0.894427190999916,4.2
+Llama31,ENR,Ecological Sensitivity,8.6,0.7539370349250519,9.0
+Llama31,ENR,Geology,6.65,0.4893604849295929,6.65
+Llama31,ENR,Regulatory Compliance,5.95,1.4317821063276353,5.411764705882353
+Llama31,ENR,Settlements and Urban Centers,3.8,0.6958523739384594,3.8
+Llama31,ENR,Slope,3.0,1.2139539573337679,2.6666666666666665
+Llama31,ENR,Topography,2.65,1.5652475842498528,2.65
+Llama31,ENR,Urban Development and Infrastructure Location,2.35,2.1830688201896455,1.3125
+Llama31,GGIS,Aquifers and Surface Water,8.1,0.30779350562554625,8.0
+Llama31,GGIS,Climate and Weather Conditions,4.4,1.0462967275611939,4.2631578947368425
+Llama31,GGIS,Ecological Sensitivity,8.4,0.8825799501580878,8.4
+Llama31,GGIS,Geology,6.9,0.8522416262267903,6.666666666666667
+Llama31,GGIS,Regulatory Compliance,6.25,1.332784974957958,5.764705882352941
+Llama31,GGIS,Settlements and Urban Centers,4.0,0.6488856845230502,4.0
+Llama31,GGIS,Slope,3.35,1.0894228312566052,3.0
+Llama31,GGIS,Topography,2.85,1.5985190514644287,2.5
+Llama31,GGIS,Urban Development and Infrastructure Location,1.8,1.5078740698501039,1.3333333333333333
+Llama31,CEUP,Aquifers and Surface Water,8.05,0.22360679774997894,8.0
+Llama31,CEUP,Climate and Weather Conditions,4.35,0.9333020044867296,4.35
+Llama31,CEUP,Ecological Sensitivity,7.95,0.998683343734455,7.95
+Llama31,CEUP,Geology,7.4,1.187655806953123,7.4
+Llama31,CEUP,Regulatory Compliance,6.45,1.3945382182304162,6.0
+Llama31,CEUP,Settlements and Urban Centers,4.1,0.6407232755171874,4.0
+Llama31,CEUP,Slope,3.75,1.292692009559488,3.75
+Llama31,CEUP,Topography,3.2,1.7350868323485928,3.2
+Llama31,CEUP,Urban Development and Infrastructure Location,1.75,1.292692009559488,1.3888888888888888
+Llama31,ES,Aquifers and Surface Water,8.1,0.30779350562554625,8.0
+Llama31,ES,Climate and Weather Conditions,4.2,0.894427190999916,4.2
+Llama31,ES,Ecological Sensitivity,8.55,0.8255779474818964,9.0
+Llama31,ES,Geology,6.45,0.6048053188292994,6.45
+Llama31,ES,Regulatory Compliance,5.85,1.496487114615601,5.294117647058823
+Llama31,ES,Settlements and Urban Centers,4.1,1.0711528467275955,3.9473684210526314
+Llama31,ES,Slope,2.65,0.6708203932499369,2.65
+Llama31,ES,Topography,2.0,1.2139539573337679,1.6666666666666667
+Llama31,ES,Urban Development and Infrastructure Location,3.5,2.8745709061939735,3.5
+Mistral,ENR,Aquifers and Surface Water,9.0,0.0,9.0
+Mistral,ENR,Climate and Weather Conditions,8.0,0.0,8.0
+Mistral,ENR,Ecological Sensitivity,8.0,0.0,8.0
+Mistral,ENR,Geology,8.1,0.30779350562554625,8.0
+Mistral,ENR,Regulatory Compliance,7.3,0.6569466853317862,7.0
+Mistral,ENR,Settlements and Urban Centers,5.95,0.5104177855340405,6.0
+Mistral,ENR,Slope,5.55,0.8255779474818965,5.55
+Mistral,ENR,Topography,5.55,0.8255779474818965,5.55
+Mistral,ENR,Urban Development and Infrastructure Location,6.1,0.4472135954999579,6.0
+Mistral,GGIS,Aquifers and Surface Water,9.0,0.0,9.0
+Mistral,GGIS,Climate and Weather Conditions,8.0,0.0,8.0
+Mistral,GGIS,Ecological Sensitivity,7.9,0.30779350562554625,8.0
+Mistral,GGIS,Geology,8.15,0.3663475485325232,8.0
+Mistral,GGIS,Regulatory Compliance,7.35,0.670820393249937,7.0
+Mistral,GGIS,Settlements and Urban Centers,5.95,0.5104177855340405,6.0
+Mistral,GGIS,Slope,5.6,0.7539370349250519,5.6
+Mistral,GGIS,Topography,5.6,0.7539370349250519,5.6
+Mistral,GGIS,Urban Development and Infrastructure Location,6.15,0.5871429486123998,6.0
+Mistral,CEUP,Aquifers and Surface Water,9.0,0.0,9.0
+Mistral,CEUP,Climate and Weather Conditions,8.0,0.0,8.0
+Mistral,CEUP,Ecological Sensitivity,7.65,0.4893604849295929,7.65
+Mistral,CEUP,Geology,8.5,0.512989176042577,8.5
+Mistral,CEUP,Regulatory Compliance,7.5,0.6069769786668839,7.5
+Mistral,CEUP,Settlements and Urban Centers,5.85,0.670820393249937,5.85
+Mistral,CEUP,Slope,5.4,0.5982430416161189,5.4
+Mistral,CEUP,Topography,6.0,0.8583950752789521,6.0
+Mistral,CEUP,Urban Development and Infrastructure Location,6.45,0.6048053188292994,6.45
+Mistral,ES,Aquifers and Surface Water,9.0,0.0,9.0
+Mistral,ES,Climate and Weather Conditions,7.9,0.30779350562554625,8.0
+Mistral,ES,Ecological Sensitivity,7.95,0.22360679774997894,8.0
+Mistral,ES,Geology,8.1,0.30779350562554625,8.0
+Mistral,ES,Regulatory Compliance,7.8,0.6958523739384594,7.8
+Mistral,ES,Settlements and Urban Centers,6.1,0.8522416262267902,6.2105263157894735
+Mistral,ES,Slope,5.6,0.6805570473787206,5.6
+Mistral,ES,Topography,5.7,0.6569466853317862,5.7
+Mistral,ES,Urban Development and Infrastructure Location,6.3,0.6569466853317862,6.3
+Qwen25,ENR,Aquifers and Surface Water,8.65,0.4893604849295929,8.65
+Qwen25,ENR,Climate and Weather Conditions,6.35,0.9333020044867296,6.35
+Qwen25,ENR,Ecological Sensitivity,8.15,0.5871429486123998,8.0
+Qwen25,ENR,Geology,8.15,1.1367080817685318,8.15
+Qwen25,ENR,Regulatory Compliance,6.6,1.231174022502185,6.6
+Qwen25,ENR,Settlements and Urban Centers,5.55,1.5035046776746235,5.55
+Qwen25,ENR,Slope,4.4,1.3917047478769187,4.4
+Qwen25,ENR,Topography,3.4,1.391704747876919,3.4
+Qwen25,ENR,Urban Development and Infrastructure Location,2.4,1.391704747876919,2.4
+Qwen25,GGIS,Aquifers and Surface Water,8.3,0.47016234598162726,8.3
+Qwen25,GGIS,Climate and Weather Conditions,5.65,0.9333020044867296,5.65
+Qwen25,GGIS,Ecological Sensitivity,8.2,0.8335087534664907,8.2
+Qwen25,GGIS,Geology,8.1,1.020835571068081,8.1
+Qwen25,GGIS,Regulatory Compliance,6.05,0.39403446282620613,6.0
+Qwen25,GGIS,Settlements and Urban Centers,4.8,1.2814465510343749,4.8
+Qwen25,GGIS,Slope,3.6,0.9403246919632544,3.6
+Qwen25,GGIS,Topography,2.6,0.9403246919632544,2.6
+Qwen25,GGIS,Urban Development and Infrastructure Location,1.6,0.9403246919632544,1.6
+Qwen25,CEUP,Aquifers and Surface Water,8.35,0.4893604849295929,8.35
+Qwen25,CEUP,Climate and Weather Conditions,5.75,0.9665456669582609,5.75
+Qwen25,CEUP,Ecological Sensitivity,7.95,0.8255779474818964,7.95
+Qwen25,CEUP,Geology,8.4,0.9403246919632545,8.4
+Qwen25,CEUP,Regulatory Compliance,6.25,0.7863975156570492,6.0
+Qwen25,CEUP,Settlements and Urban Centers,5.2,1.7044832524535805,5.2
+Qwen25,CEUP,Slope,3.85,1.2258187382102494,3.85
+Qwen25,CEUP,Topography,2.85,1.2258187382102494,2.85
+Qwen25,CEUP,Urban Development and Infrastructure Location,2.45,2.2589005243585585,2.45
+Qwen25,ES,Aquifers and Surface Water,8.35,0.4893604849295929,8.35
+Qwen25,ES,Climate and Weather Conditions,5.75,0.9665456669582609,5.75
+Qwen25,ES,Ecological Sensitivity,8.35,0.7451598203705947,8.35
+Qwen25,ES,Geology,7.7,1.1285761872936697,7.7
+Qwen25,ES,Regulatory Compliance,6.15,0.8127277008872492,6.0
+Qwen25,ES,Settlements and Urban Centers,4.8,1.2814465510343749,4.8
+Qwen25,ES,Slope,3.6,0.9403246919632544,3.6
+Qwen25,ES,Topography,2.6,0.9403246919632544,2.6
+Qwen25,ES,Urban Development and Infrastructure Location,1.6,0.9403246919632544,1.6

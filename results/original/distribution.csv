@@ -1,0 +1,109 @@
+model,profile,criterion,mean,std,mean_iqr
+ChatGPT,ENR,Aquifers and Surface Water,3.2,0.41039134083406165,3.0
+ChatGPT,ENR,Climate and Weather Conditions,7.45,0.5104177855340405,7.45
+ChatGPT,ENR,Ecological Sensitivity,8.8,0.4103913408340616,9.0
+ChatGPT,ENR,Geology,3.2,0.41039134083406165,3.0
+ChatGPT,ENR,Regulatory Compliance,4.0,0.0,4.0
+ChatGPT,ENR,Settlements and Urban Centers,3.85,0.36634754853252327,4.0
+ChatGPT,ENR,Slope,8.95,0.22360679774997894,9.0
+ChatGPT,ENR,Topography,6.6,0.5026246899500346,6.6
+ChatGPT,ENR,Urban Development and Infrastructure Location,9.0,0.0,9.0
+ChatGPT,GGIS,Aquifers and Surface Water,7.35,0.4893604849295929,7.35
+ChatGPT,GGIS,Climate and Weather Conditions,4.45,0.5104177855340405,4.45
+ChatGPT,GGIS,Ecological Sensitivity,6.6,0.5026246899500346,6.6
+ChatGPT,GGIS,Geology,8.35,0.4893604849295929,8.35
+ChatGPT,GGIS,Regulatory Compliance,9.0,0.0,9.0
+ChatGPT,GGIS,Settlements and Urban Centers,8.5,0.512989176042577,8.5
+ChatGPT,GGIS,Slope,5.35,0.4893604849295929,5.35
+ChatGPT,GGIS,Topography,3.0,0.0,3.0
+ChatGPT,GGIS,Urban Development and Infrastructure Location,4.55,0.5104177855340405,4.55
+ChatGPT,CEUP,Aquifers and Surface Water,6.25,0.4442616583193193,6.0
+ChatGPT,CEUP,Climate and Weather Conditions,7.35,0.4893604849295929,7.35
+ChatGPT,CEUP,Ecological Sensitivity,5.1,0.30779350562554625,5.0
+ChatGPT,CEUP,Geology,6.0,0.0,6.0
+ChatGPT,CEUP,Regulatory Compliance,8.75,0.4442616583193193,9.0
+ChatGPT,CEUP,Settlements and Urban Centers,9.0,0.0,9.0
+ChatGPT,CEUP,Slope,4.5,0.512989176042577,4.5
+ChatGPT,CEUP,Topography,4.0,0.0,4.0
+ChatGPT,CEUP,Urban Development and Infrastructure Location,9.0,0.0,9.0
+ChatGPT,ES,Aquifers and Surface Water,3.1,0.5525062514530825,3.0
+ChatGPT,ES,Climate and Weather Conditions,3.45,0.7591546545162482,3.45
+ChatGPT,ES,Ecological Sensitivity,4.7,0.47016234598162726,4.7
+ChatGPT,ES,Geology,2.3,0.47016234598162726,2.3
+ChatGPT,ES,Regulatory Compliance,8.75,0.4442616583193193,9.0
+ChatGPT,ES,Settlements and Urban Centers,8.25,0.4442616583193193,8.0
+ChatGPT,ES,Slope,3.85,0.36634754853252327,4.0
+ChatGPT,ES,Topography,3.1,0.447213595499958,3.0
+ChatGPT,ES,Urban Development and Infrastructure Location,8.5,0.8885233166386386,9.0
+Copilot,ENR,Aquifers and Surface Water,5.0,0.5619514869490163,5.0
+Copilot,ENR,Climate and Weather Conditions,5.6,0.5026246899500346,5.6
+Copilot,ENR,Ecological Sensitivity,8.65,0.4893604849295929,8.65
+Copilot,ENR,Geology,4.5,0.512989176042577,4.5
+Copilot,ENR,Regulatory Compliance,7.85,0.36634754853252327,8.0
+Copilot,ENR,Settlements and Urban Centers,6.7,0.47016234598162726,6.7
+Copilot,ENR,Slope,9.0,0.0,9.0
+Copilot,ENR,Topography,5.7,0.47016234598162726,5.7
+Copilot,ENR,Urban Development and Infrastructure Location,8.45,0.5104177855340405,8.45
+Copilot,GGIS,Aquifers and Surface Water,7.75,0.4442616583193193,8.0
+Copilot,GGIS,Climate and Weather Conditions,6.45,0.5104177855340405,6.45
+Copilot,GGIS,Ecological Sensitivity,8.2,0.4103913408340616,8.0
+Copilot,GGIS,Geology,5.5,0.512989176042577,5.5
+Copilot,GGIS,Regulatory Compliance,9.0,0.0,9.0
+Copilot,GGIS,Settlements and Urban Centers,8.0,0.0,8.0
+Copilot,GGIS,Slope,7.0,0.0,7.0
+Copilot,GGIS,Topography,5.45,0.5104177855340405,5.45
+Copilot,GGIS,Urban Development and Infrastructure Location,7.95,0.22360679774997894,8.0
+Copilot,CEUP,Aquifers and Surface Water,7.3,0.7326950970650465,7.3
+Copilot,CEUP,Climate and Weather Conditions,7.2,0.6958523739384594,7.2
+Copilot,CEUP,Ecological Sensitivity,5.35,0.4893604849295929,5.35
+Copilot,CEUP,Geology,5.6,0.5026246899500346,5.6
+Copilot,CEUP,Regulatory Compliance,8.6,0.5026246899500346,8.6
+Copilot,CEUP,Settlements and Urban Centers,8.75,0.4442616583193193,9.0
+Copilot,CEUP,Slope,4.45,0.5104177855340405,4.45
+Copilot,CEUP,Topography,3.45,0.5104177855340405,3.45
+Copilot,CEUP,Urban Development and Infrastructure Location,6.55,0.5104177855340405,6.55
+Copilot,ES,Aquifers and Surface Water,4.5,0.512989176042577,4.5
+Copilot,ES,Climate and Weather Conditions,3.5,0.512989176042577,3.5
+Copilot,ES,Ecological Sensitivity,5.5,0.512989176042577,5.5
+Copilot,ES,Geology,3.0,0.0,3.0
+Copilot,ES,Regulatory Compliance,8.5,0.512989176042577,8.5
+Copilot,ES,Settlements and Urban Centers,7.5,0.512989176042577,7.5
+Copilot,ES,Slope,5.0,0.0,5.0
+Copilot,ES,Topography,3.5,0.512989176042577,3.5
+Copilot,ES,Urban Development and Infrastructure Location,6.5,0.512989176042577,6.5
+Gemini,ENR,Aquifers and Surface Water,3.4,0.5026246899500346,3.4
+Gemini,ENR,Climate and Weather Conditions,4.4,0.5026246899500346,4.4
+Gemini,ENR,Ecological Sensitivity,7.4,0.5026246899500346,7.4
+Gemini,ENR,Geology,2.4,0.5026246899500346,2.4
+Gemini,ENR,Regulatory Compliance,3.4,0.5026246899500346,3.4
+Gemini,ENR,Settlements and Urban Centers,3.4,0.5026246899500346,3.4
+Gemini,ENR,Slope,9.0,0.0,9.0
+Gemini,ENR,Topography,4.4,0.5026246899500346,4.4
+Gemini,ENR,Urban Development and Infrastructure Location,7.4,0.5026246899500346,7.4
+Gemini,GGIS,Aquifers and Surface Water,5.4,0.5026246899500346,5.4
+Gemini,GGIS,Climate and Weather Conditions,4.4,0.5026246899500346,4.4
+Gemini,GGIS,Ecological Sensitivity,6.4,0.5026246899500346,6.4
+Gemini,GGIS,Geology,5.4,0.5026246899500346,5.4
+Gemini,GGIS,Regulatory Compliance,7.4,0.5026246899500346,7.4
+Gemini,GGIS,Settlements and Urban Centers,7.4,0.5026246899500346,7.4
+Gemini,GGIS,Slope,4.4,0.5026246899500346,4.4
+Gemini,GGIS,Topography,4.4,0.5026246899500346,4.4
+Gemini,GGIS,Urban Development and Infrastructure Location,3.4,0.5026246899500346,3.4
+Gemini,CEUP,Aquifers and Surface Water,4.4,0.5026246899500346,4.4
+Gemini,CEUP,Climate and Weather Conditions,5.4,0.5026246899500346,5.4
+Gemini,CEUP,Ecological Sensitivity,4.4,0.5026246899500346,4.4
+Gemini,CEUP,Geology,5.4,0.5026246899500346,5.4
+Gemini,CEUP,Regulatory Compliance,7.4,0.5026246899500346,7.4
+Gemini,CEUP,Settlements and Urban Centers,7.4,0.5026246899500346,7.4
+Gemini,CEUP,Slope,4.4,0.5026246899500346,4.4
+Gemini,CEUP,Topography,3.4,0.5026246899500346,3.4
+Gemini,CEUP,Urban Development and Infrastructure Location,5.4,0.5026246899500346,5.4
+Gemini,ES,Aquifers and Surface Water,1.4,0.5026246899500346,1.4
+Gemini,ES,Climate and Weather Conditions,1.4,0.5026246899500346,1.4
+Gemini,ES,Ecological Sensitivity,4.4,0.5026246899500346,4.4
+Gemini,ES,Geology,1.4,0.5026246899500346,1.4
+Gemini,ES,Regulatory Compliance,7.4,0.5026246899500346,7.4
+Gemini,ES,Settlements and Urban Centers,6.4,0.5026246899500346,6.4
+Gemini,ES,Slope,4.4,0.5026246899500346,4.4
+Gemini,ES,Topography,1.4,0.5026246899500346,1.4
+Gemini,ES,Urban Development and Infrastructure Location,4.4,0.5026246899500346,4.4

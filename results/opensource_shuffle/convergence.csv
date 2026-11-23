@@ -1,0 +1,4 @@
+alpha,iterations,W_initial,W_final,converged
+0.3,4,0.94375,1.0,True
+0.5,6,0.94375,1.0,True
+0.7,3,0.94375,0.95625,True

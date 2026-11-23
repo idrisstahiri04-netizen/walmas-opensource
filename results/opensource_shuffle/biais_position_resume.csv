@@ -1,0 +1,4 @@
+model,rho_moyen,part_rho_positif,n_reponses
+llama3.1:8b,0.3425930131825313,0.8125,80
+mistral:7b,0.2947554905495745,0.75,80
+qwen2.5:7b,0.543361884312843,0.9875,80

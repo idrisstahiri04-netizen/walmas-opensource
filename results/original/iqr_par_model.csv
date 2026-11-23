@@ -1,0 +1,4 @@
+model,rejetes,total,iqr_nul,taux
+ChatGPT,56,720,17,0.07777777777777778
+Copilot,24,720,10,0.03333333333333333
+Gemini,0,720,1,0.0

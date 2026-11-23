@@ -1,0 +1,109 @@
+model,profile,criterion,n,rejected,zero_iqr
+ChatGPT,ENR,Aquifers and Surface Water,20,4,True
+ChatGPT,ENR,Climate and Weather Conditions,20,0,False
+ChatGPT,ENR,Ecological Sensitivity,20,4,True
+ChatGPT,ENR,Geology,20,4,True
+ChatGPT,ENR,Regulatory Compliance,20,0,True
+ChatGPT,ENR,Settlements and Urban Centers,20,3,True
+ChatGPT,ENR,Slope,20,1,True
+ChatGPT,ENR,Topography,20,0,False
+ChatGPT,ENR,Urban Development and Infrastructure Location,20,0,True
+ChatGPT,GGIS,Aquifers and Surface Water,20,0,False
+ChatGPT,GGIS,Climate and Weather Conditions,20,0,False
+ChatGPT,GGIS,Ecological Sensitivity,20,0,False
+ChatGPT,GGIS,Geology,20,0,False
+ChatGPT,GGIS,Regulatory Compliance,20,0,True
+ChatGPT,GGIS,Settlements and Urban Centers,20,0,False
+ChatGPT,GGIS,Slope,20,0,False
+ChatGPT,GGIS,Topography,20,0,True
+ChatGPT,GGIS,Urban Development and Infrastructure Location,20,0,False
+ChatGPT,CEUP,Aquifers and Surface Water,20,5,False
+ChatGPT,CEUP,Climate and Weather Conditions,20,0,False
+ChatGPT,CEUP,Ecological Sensitivity,20,2,True
+ChatGPT,CEUP,Geology,20,0,True
+ChatGPT,CEUP,Regulatory Compliance,20,5,False
+ChatGPT,CEUP,Settlements and Urban Centers,20,0,True
+ChatGPT,CEUP,Slope,20,0,False
+ChatGPT,CEUP,Topography,20,0,True
+ChatGPT,CEUP,Urban Development and Infrastructure Location,20,0,True
+ChatGPT,ES,Aquifers and Surface Water,20,6,True
+ChatGPT,ES,Climate and Weather Conditions,20,0,False
+ChatGPT,ES,Ecological Sensitivity,20,0,False
+ChatGPT,ES,Geology,20,0,False
+ChatGPT,ES,Regulatory Compliance,20,5,False
+ChatGPT,ES,Settlements and Urban Centers,20,5,False
+ChatGPT,ES,Slope,20,3,True
+ChatGPT,ES,Topography,20,4,True
+ChatGPT,ES,Urban Development and Infrastructure Location,20,5,False
+Copilot,ENR,Aquifers and Surface Water,20,6,True
+Copilot,ENR,Climate and Weather Conditions,20,0,False
+Copilot,ENR,Ecological Sensitivity,20,0,False
+Copilot,ENR,Geology,20,0,False
+Copilot,ENR,Regulatory Compliance,20,3,True
+Copilot,ENR,Settlements and Urban Centers,20,0,False
+Copilot,ENR,Slope,20,0,True
+Copilot,ENR,Topography,20,0,False
+Copilot,ENR,Urban Development and Infrastructure Location,20,0,False
+Copilot,GGIS,Aquifers and Surface Water,20,5,False
+Copilot,GGIS,Climate and Weather Conditions,20,0,False
+Copilot,GGIS,Ecological Sensitivity,20,4,True
+Copilot,GGIS,Geology,20,0,False
+Copilot,GGIS,Regulatory Compliance,20,0,True
+Copilot,GGIS,Settlements and Urban Centers,20,0,True
+Copilot,GGIS,Slope,20,0,True
+Copilot,GGIS,Topography,20,0,False
+Copilot,GGIS,Urban Development and Infrastructure Location,20,1,True
+Copilot,CEUP,Aquifers and Surface Water,20,0,False
+Copilot,CEUP,Climate and Weather Conditions,20,0,False
+Copilot,CEUP,Ecological Sensitivity,20,0,False
+Copilot,CEUP,Geology,20,0,False
+Copilot,CEUP,Regulatory Compliance,20,0,False
+Copilot,CEUP,Settlements and Urban Centers,20,5,False
+Copilot,CEUP,Slope,20,0,False
+Copilot,CEUP,Topography,20,0,False
+Copilot,CEUP,Urban Development and Infrastructure Location,20,0,False
+Copilot,ES,Aquifers and Surface Water,20,0,False
+Copilot,ES,Climate and Weather Conditions,20,0,False
+Copilot,ES,Ecological Sensitivity,20,0,False
+Copilot,ES,Geology,20,0,True
+Copilot,ES,Regulatory Compliance,20,0,False
+Copilot,ES,Settlements and Urban Centers,20,0,False
+Copilot,ES,Slope,20,0,True
+Copilot,ES,Topography,20,0,False
+Copilot,ES,Urban Development and Infrastructure Location,20,0,False
+Gemini,ENR,Aquifers and Surface Water,20,0,False
+Gemini,ENR,Climate and Weather Conditions,20,0,False
+Gemini,ENR,Ecological Sensitivity,20,0,False
+Gemini,ENR,Geology,20,0,False
+Gemini,ENR,Regulatory Compliance,20,0,False
+Gemini,ENR,Settlements and Urban Centers,20,0,False
+Gemini,ENR,Slope,20,0,True
+Gemini,ENR,Topography,20,0,False
+Gemini,ENR,Urban Development and Infrastructure Location,20,0,False
+Gemini,GGIS,Aquifers and Surface Water,20,0,False
+Gemini,GGIS,Climate and Weather Conditions,20,0,False
+Gemini,GGIS,Ecological Sensitivity,20,0,False
+Gemini,GGIS,Geology,20,0,False
+Gemini,GGIS,Regulatory Compliance,20,0,False
+Gemini,GGIS,Settlements and Urban Centers,20,0,False
+Gemini,GGIS,Slope,20,0,False
+Gemini,GGIS,Topography,20,0,False
+Gemini,GGIS,Urban Development and Infrastructure Location,20,0,False
+Gemini,CEUP,Aquifers and Surface Water,20,0,False
+Gemini,CEUP,Climate and Weather Conditions,20,0,False
+Gemini,CEUP,Ecological Sensitivity,20,0,False
+Gemini,CEUP,Geology,20,0,False
+Gemini,CEUP,Regulatory Compliance,20,0,False
+Gemini,CEUP,Settlements and Urban Centers,20,0,False
+Gemini,CEUP,Slope,20,0,False
+Gemini,CEUP,Topography,20,0,False
+Gemini,CEUP,Urban Development and Infrastructure Location,20,0,False
+Gemini,ES,Aquifers and Surface Water,20,0,False
+Gemini,ES,Climate and Weather Conditions,20,0,False
+Gemini,ES,Ecological Sensitivity,20,0,False
+Gemini,ES,Geology,20,0,False
+Gemini,ES,Regulatory Compliance,20,0,False
+Gemini,ES,Settlements and Urban Centers,20,0,False
+Gemini,ES,Slope,20,0,False
+Gemini,ES,Topography,20,0,False
+Gemini,ES,Urban Development and Infrastructure Location,20,0,False
