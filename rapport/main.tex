@@ -1,0 +1,1004 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------------------------------------------------------------- Paquets
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{newtxtext,newtxmath}
+\usepackage[a4paper,hmargin=2.4cm,top=2.6cm,bottom=2.6cm,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{icomma}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,shapes.geometric,calc}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\frenchsetup{og=«, fg=»}
+
+% Bloc réservé aux résultats de l'expérience de contrôle (à compléter)
+
+% ---------------------------------------------------------------- Mise en page
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\paragraph}[runin]{\normalsize\bfseries}{}{0pt}{}[.]
+\titlespacing*{\paragraph}{0pt}{1.2ex plus .5ex}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Pondération collaborative par systèmes multi-agents de LLM}
+\fancyhead[R]{\small\itshape Ahrim, Saad, Tahiri}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\captionsetup{font=small,labelsep=endash}
+\captionsetup[table]{position=top,skip=4pt}
+\setlist{itemsep=1pt,topsep=3pt}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
+\setlist[itemize]{label=---,leftmargin=*}
+
+% Algorithme en français
+\floatname{algorithm}{Algorithme}
+\algrenewcommand\algorithmicrequire{\textbf{Entrées :}}
+\algrenewcommand\algorithmicensure{\textbf{Sorties :}}
+\algrenewcommand\algorithmicfor{\textbf{pour}}
+\algrenewcommand\algorithmicdo{\textbf{faire}}
+\algrenewcommand\algorithmicend{\textbf{fin}}
+\algrenewcommand\algorithmicrepeat{\textbf{répéter}}
+\algrenewcommand\algorithmicuntil{\textbf{jusqu'à}}
+\algrenewtext{EndFor}{\textbf{fin pour}}
+
+\newcommand{\Wbar}{\bar{W}}
+\newcommand{\Wmoy}{\bar{W}_{\mathrm{moy}}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+% TikZ : styles communs
+\tikzset{
+  box/.style={draw=black!55, rounded corners=2pt, fill=white, align=flush center,
+              minimum height=8mm, inner sep=3pt, text width=#1},
+  box/.default=3.4cm,
+  arr/.style={-{Stealth[length=2.2mm]}, thick, black!70},
+  lvl/.style={draw=#1!70!black, rounded corners=4pt, fill=#1!6, line width=0.8pt, inner sep=7pt},
+  lvlname/.style={font=\footnotesize\bfseries, text=#1!70!black, anchor=north west, fill=#1!6, inner sep=1.5pt, xshift=2pt, yshift=-1.5pt},
+}
+\definecolor{n0}{HTML}{2B6CB0}
+\definecolor{n1}{HTML}{C05621}
+\definecolor{n2}{HTML}{2F855A}
+\definecolor{gin}{HTML}{6B7280}
+
+\begin{document}
+
+% ================================================================ Titre
+\thispagestyle{plain}
+\begin{center}
+  \vspace*{1.2cm}
+  {\LARGE\bfseries Pondération collaborative des critères en décision\\[2pt]
+  multicritère spatiale par systèmes multi-agents de grands\\[2pt]
+  modèles de langage\par}
+  \vspace{0.6cm}
+  {\large\bfseries Hamza AHRIM\textsuperscript{1}, Mouafiq SAAD\textsuperscript{1}, et Med. Idriss TAHIRI\textsuperscript{1}\par}
+  \vspace{0.2cm}
+  {\small\bfseries\itshape \textsuperscript{1}École Mohammadia d'Ingénieurs, Département de Modélisation et Informatique Scientifique, Rabat, Maroc\par}
+  \vspace{0.8cm}
+  novembre 2026
+\end{center}
+
+\vspace{0.4cm}
+\begin{center}\bfseries Résumé\end{center}
+\vspace{-0.3cm}
+\begin{quote}
+\small
+La pondération des critères est une étape déterminante de la décision multicritère spatiale. Elle repose habituellement sur des experts humains, dont les jugements sont subjectifs, coûteux à recueillir et difficiles à mettre en consensus. Ce travail étudie la méthode WALMAS (\emph{Weight Assignment by LLM-based MAS}), qui confie la pondération à des systèmes multi-agents de grands modèles de langage, et la met en œuvre exclusivement avec trois modèles open source exécutés localement (Llama~3.1~8B, Qwen2.5~7B, Mistral~7B). Les poids initiaux sont filtrés par la méthode de l'écart interquartile, puis consolidés par une négociation itérative suivie par le coefficient de concordance de Kendall. Sur le cas de la sélection d'un site de décharge, notre implémentation, appliquée aux poids publiés de l'étude originale, retrouve les poids finaux publiés par l'auteur, mais pas certaines autres valeurs de l'article (nombre d'itérations, dispersion et corrélations entre modèles). La collecte open source (240 réponses, toutes valides au premier essai, environ 37 minutes sur un ordinateur portable) produit des poids stables, mais très différents de ceux de l'étude originale (corrélation de rang $-0{,}10$), des profils d'experts presque indiscernables ($W_K=0{,}983$ dès le départ) et un fort biais de position : les critères cités en premier dans la consigne reçoivent systématiquement les poids les plus élevés. Nous montrons aussi que la négociation ne modifie pas les poids finaux, égaux à la moyenne des profils, et que le $W$ de Kendall suit la convergence sans la valider.
+Une expérience de contrôle, où l'ordre des critères est tiré au hasard pour chaque agent, confirme un effet propre de la position (le poids moyen passe de 7,6 pour le critère cité en premier à 5,2 pour le dernier), mais montre qu'il s'ajoute à une préférence réelle des modèles pour les critères environnementaux, qui reste éloignée du classement de l'étude originale.
+
+\smallskip
+\noindent\textbf{Mots-clés :} décision multicritère, SIG, grands modèles de langage, modèles open source, systèmes multi-agents, pondération des critères, biais de position, reproductibilité.
+\end{quote}
+
+% ================================================================ 1
+\section{Introduction}
+
+Les décisions d'aménagement du territoire, comme le choix de l'emplacement d'une décharge, d'un hôpital, d'une usine ou d'une centrale solaire, engagent des ressources importantes et ont des effets durables sur l'environnement et sur la société. Elles reposent sur la prise en compte simultanée de nombreux facteurs, souvent contradictoires : contraintes environnementales, coûts économiques, acceptabilité sociale, exigences réglementaires. Les approches de \emph{décision multicritère spatiale} (SMCDM, \emph{Spatial Multi-Criteria Decision Making}), couplées aux systèmes d'information géographique (SIG)\footnote{Un SIG est un outil logiciel qui permet de collecter, stocker, analyser et cartographier des données associées à une position géographique.}, offrent un cadre rigoureux pour structurer ces problèmes et produire des cartes d'aptitude du territoire\footnote{Une carte d'aptitude attribue à chaque zone du territoire une note indiquant à quel point elle convient à l'usage visé, par exemple l'implantation d'une décharge.}.
+
+Au cœur de ces approches se trouve une étape déterminante : l'attribution d'un \emph{poids} à chaque critère, qui traduit son importance relative dans la décision finale. Cette étape repose traditionnellement sur le jugement d'experts, au moyen de méthodes telles que l'AHP (\emph{Analytic Hierarchy Process})\footnote{L'AHP consiste à comparer les critères deux à deux (le critère A est-il plus important que B, et de combien ?) puis à en déduire mathématiquement un poids pour chacun.}~\cite{saaty}, la méthode du meilleur et du pire (BWM)\footnote{Le BWM ne demande à l'expert que de désigner le critère le plus important et le moins important, puis de les comparer aux autres, ce qui réduit le nombre de comparaisons par rapport à l'AHP.}~\cite{rezaei} ou l'allocation directe de points. Si ces méthodes sont bien établies, elles dépendent fortement de la disponibilité, de la subjectivité et de la capacité d'accord des experts sollicités.
+
+Parallèlement, les progrès récents de l'intelligence artificielle générative, et en particulier des grands modèles de langage (LLM, \emph{Large Language Models})\footnote{Un LLM est un modèle d'apprentissage profond entraîné sur d'énormes quantités de textes pour comprendre et générer du langage naturel. ChatGPT en est l'exemple le plus connu.}, ouvrent de nouvelles perspectives. Ces modèles peuvent adopter un rôle, raisonner sur un problème décrit en langage naturel et exprimer des préférences. Associés à des systèmes multi-agents (SMA)\footnote{Un système multi-agents est un ensemble d'entités logicielles autonomes (les agents) qui interagissent, coopèrent ou négocient pour résoudre un problème commun.}, ils permettent d'envisager une simulation automatisée de la délibération d'un groupe d'experts.
+
+Ce rapport s'inscrit dans cette dynamique. Il porte sur la méthode WALMAS (\emph{Weight Assignment by LLM-based MAS}) proposée par Vahidnia~\cite{vahidnia}, qui utilise des agents fondés sur des LLM pour pondérer collectivement des critères en décision multicritère spatiale. Contrairement à l'étude originale, qui s'appuie sur des modèles propriétaires (GPT-4o, Gemini, Copilot), nous retenons dans ce projet \textbf{uniquement des modèles open source}\footnote{Au sens strict, un modèle est open source si son code, ses poids et ses conditions d'utilisation sont libres. Beaucoup de modèles dits open source (Llama, Mistral, Qwen, etc.) sont en réalité à \emph{poids ouverts} : les paramètres du modèle sont téléchargeables, mais les données d'entraînement ne sont pas toujours publiques et la licence peut comporter des restrictions.}, exécutés localement. Nous en étudions le principe, la mise en œuvre et les résultats, avant d'en discuter la portée et les limites.
+
+% ================================================================ 2
+\section{Contexte}
+
+\subsection{La pondération des critères en décision multicritère spatiale}
+
+L'analyse multicritère consiste à évaluer un ensemble d'alternatives selon plusieurs critères, chacun étant affecté d'un poids. En contexte spatial, les critères prennent la forme de couches géographiques (pente, géologie, distance aux zones habitées, etc.) combinées, par exemple par somme pondérée\footnote{La somme pondérée multiplie la note de chaque critère par son poids, puis additionne le tout pour obtenir un score global par zone.}, pour produire une carte d'aptitude. Les poids influencent directement le résultat : une variation de pondération peut modifier sensiblement les zones retenues.
+
+On distingue classiquement plusieurs familles de méthodes de pondération : la notation directe, la comparaison par paires (AHP, BWM), l'allocation de points et le classement. Des variantes récentes intègrent l'incertitude, notamment par la logique floue\footnote{La logique floue permet de manipuler des notions imprécises (assez important, plutôt faible) au lieu de valeurs strictement vraies ou fausses.} ou la théorie des systèmes gris\footnote{Cadre mathématique pour traiter des données incomplètes ou peu nombreuses, en représentant chaque valeur par un intervalle (un nombre gris).}. Dans le cas d'une décision impliquant plusieurs parties prenantes, on parle d'analyse de décision spatiale collaborative (CMSDA, \emph{Collaborative Multi-criteria Spatial Decision Analysis}), qui cherche à agréger des avis parfois divergents.
+
+\subsection{Limites de l'approche fondée sur des experts humains}
+
+Malgré leur intérêt, les méthodes de pondération par des experts présentent plusieurs difficultés :
+\begin{itemize}
+  \item \textbf{La subjectivité} : l'expérience, les préférences et les limites cognitives de chaque expert introduisent des biais dans les pondérations.
+  \item \textbf{Le coût} : réunir des experts qualifiés, recueillir leurs jugements et animer le processus demande du temps, de l'argent et un effort d'organisation important.
+  \item \textbf{La recherche de consensus} : lorsque les points de vue divergent ou que le problème est complexe, parvenir à un accord est difficile.
+  \item \textbf{L'écart entre expertise métier et expertise méthodologique} : un expert connaît souvent bien le sujet sans maîtriser la méthode de pondération, ce qui peut dégrader la qualité des résultats.
+\end{itemize}
+
+\subsection{Grands modèles de langage et systèmes multi-agents}
+
+Les LLM sont des réseaux de neurones profonds de type Transformer\footnote{Le Transformer est l'architecture de réseau de neurones à la base des LLM modernes. Son mécanisme d'attention lui permet de relier entre eux les mots d'un texte selon leur contexte.}, entraînés sur de très grands corpus de textes. Ils sont capables de comprendre et de produire du langage, de synthétiser des informations et d'adopter un rôle décrit dans une consigne (\emph{prompt})\footnote{Le \emph{prompt} est le texte envoyé au modèle pour lui indiquer ce qu'on attend de lui : son rôle, le problème posé et le format de la réponse.}. Leur usage s'étend à de nombreux domaines, dont les sciences de l'information géographique, avec des SIG pilotés en langage naturel, des assistants cartographiques ou des modèles spécialisés.
+
+Les systèmes multi-agents, quant à eux, réunissent des entités autonomes qui interagissent, coopèrent et négocient\footnote{La négociation désigne ici un processus par lequel des agents aux préférences différentes ajustent progressivement leurs positions jusqu'à parvenir à un accord.} pour atteindre un objectif commun. Ils sont utilisés pour traiter des problèmes complexes et distribués, et les mécanismes de négociation entre agents ont fait l'objet de nombreux protocoles. Leur emploi pour pondérer des critères en décision multicritère spatiale reste toutefois rare, et l'utilisation de LLM comme agents négociateurs constitue une piste encore peu explorée.
+
+\subsection{La méthode WALMAS}
+
+La méthode WALMAS combine ces deux technologies en deux niveaux. Au premier niveau, plusieurs LLM (GPT-4o, Gemini et Copilot dans l'étude originale) jouent le rôle d'experts de différents domaines (géographie et SIG, urbanisme, économie et société, environnement et ressources naturelles). Chaque agent attribue à chaque critère un poids exprimé sur une échelle linguistique\footnote{Les agents répondent avec des termes comme importance faible, importance modérée ou importance extrême, qui sont ensuite convertis en nombres de 1 à 9.} de 1 à 9. Au second niveau, un algorithme en deux étapes consolide ces avis : les valeurs aberrantes\footnote{Une valeur aberrante est une valeur très éloignée des autres, qui ne semble pas représentative du groupe.} sont d'abord éliminées par la méthode de l'écart interquartile (IQR)\footnote{On calcule le premier quartile $Q_1$ et le troisième quartile $Q_3$ des poids ; toute valeur inférieure à $Q_1-1{,}5\times\mathrm{IQR}$ ou supérieure à $Q_3+1{,}5\times\mathrm{IQR}$, avec $\mathrm{IQR}=Q_3-Q_1$, est écartée.}, puis les groupes d'experts « négocient » de manière itérative en rapprochant leurs poids de la moyenne globale jusqu'à ce que le coefficient de concordance de Kendall ($W$)\footnote{Le $W$ de Kendall mesure l'accord entre plusieurs évaluateurs qui classent les mêmes éléments : il vaut 0 en l'absence d'accord et 1 lorsque tous les classements sont identiques.}~\cite{kendall} converge. La méthode est illustrée par un cas d'étude de sélection de site de décharge, avec neuf critères. Dans ce projet, les trois modèles propriétaires sont remplacés par des modèles open source.
+
+% ================================================================ 3
+\section{Problématique}
+
+Le contexte précédent met en évidence un double constat. D'une part, la pondération par des experts humains est essentielle mais coûteuse, subjective et difficile à mettre en consensus. D'autre part, les LLM organisés en systèmes multi-agents semblent capables de simuler une délibération collective rapide et peu coûteuse. Cependant, la fiabilité de cette substitution reste à établir : un accord entre agents artificiels n'est pas, en soi, la preuve d'un accord juste ou pertinent. De plus, l'étude de référence repose sur des modèles propriétaires accessibles uniquement par des services en ligne, ce qui limite la reproductibilité\footnote{Un modèle propriétaire peut être modifié ou retiré par son éditeur sans préavis, de sorte que les mêmes questions posées plus tard peuvent donner des réponses différentes.}, impose un coût d'utilisation et oblige à transmettre les données à un tiers. L'usage de modèles open source, exécutables localement, répond à ces contraintes mais soulève la question de la qualité de leurs pondérations.
+
+La question centrale de ce rapport est donc la suivante :
+\begin{quote}
+\itshape Dans quelle mesure un système multi-agents de grands modèles de langage \textup{open source} peut-il remplacer ou compléter des experts humains pour attribuer, de manière fiable et collaborative, des poids aux critères d'une décision multicritère spatiale ?
+\end{quote}
+
+Cette question se décline en plusieurs sous-questions :
+\begin{enumerate}[label=\arabic*.,leftmargin=*]
+  \item\label{q1} Comment concevoir un processus de pondération collaborative reposant sur des agents LLM, depuis la formulation des consignes jusqu'à l'extraction de poids numériques ?
+  \item\label{q2} Les mécanismes de consolidation proposés (suppression des valeurs aberrantes par IQR, négociation fondée sur le $W$ de Kendall) garantissent-ils un consensus significatif, ou la convergence résulte-t-elle surtout de la construction de l'algorithme ?
+  \item\label{q3} Les poids obtenus sont-ils cohérents et stables, et dans quelle mesure diffèrent-ils d'un LLM à l'autre et d'un profil d'expert à l'autre ?
+  \item\label{q4} Des modèles open source permettent-ils d'obtenir des pondérations comparables à celles des modèles propriétaires de l'étude originale, avec un coût réduit et une meilleure reproductibilité ?
+  \item\label{q5} Quelles sont les limites de la méthode, notamment en matière de transparence, de biais, de sensibilité au contexte géographique et de validation par rapport à des experts humains ?
+\end{enumerate}
+
+\paragraph{Objectifs} Ce travail vise à présenter et analyser la méthode WALMAS, à la mettre en œuvre avec des modèles open source sur le cas de la sélection de site de décharge, à comparer nos résultats à ceux de l'étude originale, et à en évaluer de façon critique les apports et les limites.
+
+\paragraph{Organisation du rapport} La section~\ref{sec:methodo} expose la méthodologie : formalisation de la méthode WALMAS, algorithme en deux niveaux et protocole d'évaluation. La section~\ref{sec:impl} décrit l'implémentation logicielle et la collecte auprès des modèles open source. La section~\ref{sec:resultats} présente les résultats, y compris une expérience de contrôle du biais de position. La section~\ref{sec:discussion} répond aux sous-questions et discute les limites, avant la conclusion (section~\ref{sec:conclusion}).
+
+% ================================================================ 4
+\section{Méthodologie}\label{sec:methodo}
+
+Cette section décrit la démarche suivie dans ce projet. Elle reprend le principe de la méthode WALMAS~\cite{vahidnia}, en deux niveaux (nettoyage puis consensus), et l'adapte à l'usage exclusif de modèles open source. Le script et les données publiés par l'auteur de l'étude originale\footnote{Dépôt GitHub \code{mhvahidnia/MAS-LLMs}~\cite{masllms}, qui contient les poids produits par les trois modèles propriétaires et le code Python de la phase de consensus.} nous ont servi de référence pour vérifier notre compréhension de l'algorithme.
+
+\subsection{Vue d'ensemble}
+
+La figure~\ref{fig:archi} résume le processus. Il se décompose en trois niveaux :
+\begin{itemize}
+  \item le \textbf{niveau 0} produit un grand nombre de pondérations en interrogeant des agents LLM, chacun jouant le rôle d'un expert ;
+  \item le \textbf{niveau 1} nettoie ces pondérations (suppression des valeurs aberrantes) et les agrège par profil d'expert ;
+  \item le \textbf{niveau 2} simule une négociation entre les profils jusqu'à l'obtention d'un consensus, mesuré par le coefficient de concordance de Kendall.
+\end{itemize}
+Les poids finaux sont destinés à alimenter une somme pondérée dans le SIG pour produire la carte d'aptitude ; cette dernière étape sort du périmètre de ce travail.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize]
+  % Entrées
+  \node[box=3.6cm] (pb) at (-5.2,0) {Problème et critères\\ $C=\{c_1,\dots,c_n\}$};
+  \node[box=3.6cm] (pr) at (0,0) {Profils d'experts\\ $E=\{e_1,\dots,e_L\}$};
+  \node[box=3.6cm, fill=n2!10] (mo) at (5.2,0) {Modèles open source (Ollama)\\ $A=\{a_1,\dots,a_K\}$};
+  % Niveau 0
+  \node[box=3.6cm] (pt) at (-5.2,-2.3) {Construction des prompts\\ (rôle, problème, critères,\\ échelle de 1 à 9)};
+  \node[box=3.6cm] (ag) at (0,-2.3) {Agents LLM\\ $K\times L\times m$ interrogations\\ (température, graine $s$)};
+  \node[box=3.6cm] (va) at (5.2,-2.3) {Sortie contrainte (schéma JSON)\\ validation, $\le r$ essais\\ $\to$ poids $\mathbf{w}^{(a,e,s)}$};
+  \node[box=3.6cm, fill=gin!8, font=\scriptsize] (js) at (0,-3.75) {réponses brutes \code{responses.jsonl}\\ + \code{run\_config.json}};
+  % Niveau 1
+  \node[box=3.6cm] (iq) at (5.2,-5.6) {Filtrage des valeurs\\ aberrantes (règle de Tukey, IQR)};
+  \node[box=3.6cm] (mm) at (0,-5.6) {Moyenne par (modèle, profil)\\ puis par profil $\to \Wbar_e$};
+  % Niveau 2
+  \node[box=3.6cm] (ng) at (-5.2,-8.0) {Négociation itérative\\ $\Wbar_e\leftarrow\alpha\Wbar_e+(1-\alpha)\Wmoy$};
+  \node[box=2.9cm, fill=yellow!12] (cv) at (-0.6,-8.0) {Convergence ?\\ ($W$ de Kendall)};
+  \node[box=3.6cm, fill=n0!10, font=\footnotesize\bfseries] (wf) at (5.2,-8.0) {Poids finaux $w^*$\\ (+ normalisation $\hat w$)};
+  \node[box=3.6cm, dashed, text=black!60] (sig) at (5.2,-9.8) {Somme pondérée $\to$ carte\\ d'aptitude (SIG), hors périmètre};
+  % Cadres de niveaux
+  \begin{scope}[on background layer]
+    \node[lvl=gin, fit=(pb)(pr)(mo), inner ysep=9pt, yshift=3pt] (fE) {};
+    \node[lvl=n0, fit=(pt)(ag)(va)(js), inner ysep=9pt, yshift=3pt] (f0) {};
+    \node[lvl=n1, fit=(iq)(mm)(pt.west|-iq), inner ysep=9pt, yshift=3pt] (f1) {};
+    \node[lvl=n2, fit=(ng)(cv), inner ysep=9pt, yshift=3pt] (f2) {};
+  \end{scope}
+  % Flèches
+  \draw[arr] (pb) -- (pt);
+  \draw[arr] (pr.south) -- (pt.north east);
+  \draw[arr] (mo.south) -- (ag.north east);
+  \draw[arr] (pt) -- (ag);
+  \draw[arr] (ag) -- (va);
+  \draw[arr, dashed] (va.south west) -- (js.east);
+  \draw[arr] (va) -- (iq);
+  \draw[arr] (iq) -- (mm);
+  \draw[arr] (mm.south) -- (ng.north east);
+  \draw[arr] ([yshift=2mm]ng.east) -- ([yshift=2mm]cv.west);
+  \draw[arr] ([yshift=-2mm]cv.west) -- node[below, font=\scriptsize]{non} ([yshift=-2mm]ng.east);
+  \draw[arr] (cv) -- node[above, font=\scriptsize]{oui} (wf);
+  \draw[arr, dashed] (wf) -- (sig);
+  \node[lvlname=gin] at (fE.north west) {Entrées};
+  \node[lvlname=n0] at (f0.north west) {Niveau 0 : génération des poids};
+  \node[lvlname=n1] at (f1.north west) {Niveau 1 : nettoyage et agrégation};
+  \node[lvlname=n2] at (f2.north west) {Niveau 2 : consensus};
+\end{tikzpicture}
+\caption{Architecture générale de la méthode WALMAS mise en œuvre avec des modèles open source. Les trois niveaux sont implémentés ; la production de la carte d'aptitude (en pointillés) n'est pas réalisée dans ce travail. Schéma réalisé pour ce rapport, d'après la description de~\cite{vahidnia}.}
+\label{fig:archi}
+\end{figure}
+
+\subsection{Formalisation}
+
+Soit $A=\{a_1,\dots,a_K\}$ l'ensemble des modèles de langage, $E=\{e_1,\dots,e_L\}$ l'ensemble des profils d'experts et $C=\{c_1,\dots,c_n\}$ l'ensemble des critères. Pour chaque couple $(a,e)\in A\times E$, on interroge $m$ agents indépendants. Chaque agent $s\in\{1,\dots,m\}$ renvoie un vecteur de poids entiers
+\begin{equation}\label{eq:wvec}
+  \mathbf{w}^{(a,e,s)}=\bigl(w_1^{(a,e,s)},\dots,w_n^{(a,e,s)}\bigr)\in\{1,\dots,9\}^n .
+\end{equation}
+Les $m$ vecteurs d'un même couple forment la matrice
+\begin{equation}\label{eq:Wae}
+  W_{a,e}=\bigl[\mathbf{w}^{(a,e,1)}\ \cdots\ \mathbf{w}^{(a,e,m)}\bigr]\in\mathbb{R}^{n\times m}.
+\end{equation}
+Au total, on obtient $K\times L\times m$ vecteurs, soit $K\times L\times m$ pondérations par critère (figure~\ref{fig:agents}). Avec $K=3$, $L=4$ et $m=20$, comme dans l'étude originale, cela donne 240 poids par critère et $240\times 9=2\,160$ poids au total.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize,
+    ag/.style={draw=black!50, rounded corners=1.5pt, fill=white, minimum width=2.1cm, minimum height=5mm, inner sep=1pt}]
+  \foreach \x/\c/\t/\d/\code in {0/n2/Profil $e_1$/Environnement et\\ ress. naturelles/ENR,
+                                 3.3/yellow!70!black/Profil $e_2$/Géographie\\ et SIG/GGIS,
+                                 6.6/n0/Profil $e_3$/Génie civil\\ et urbanisme/CEUP,
+                                 9.9/n1/Profil $e_4$/Économie\\ et société/ES} {
+    \begin{scope}[xshift=\x cm]
+      \node[font=\footnotesize\bfseries] (h) at (0,0) {\t\ (\code)};
+      \node[align=center, font=\scriptsize] (d) at (0,-0.55) {\d};
+      \node[ag] (a1) at (0,-1.35) {Agent 1 \ ($s=0$)};
+      \node[ag] (a2) at (0,-1.95) {Agent 2 \ ($s=1$)};
+      \node (dt) at (0,-2.45) {$\vdots$};
+      \node[ag] (am) at (0,-3.0) {Agent $m$ \ ($s=m-1$)};
+      \node[font=\scriptsize] (wm) at (0,-3.65) {$W_{a,e}\in\mathbb{R}^{n\times m}$};
+      \begin{scope}[on background layer]
+        \node[lvl=\c, fit=(h)(d)(a1)(am)(wm), inner sep=4pt] {};
+      \end{scope}
+    \end{scope}
+  }
+  \begin{scope}[on background layer]
+    \node[draw=n0!70!black, line width=0.9pt, rounded corners=5pt, fill=n0!3,
+          fit={(-1.5,0.9) (11.4,-4.05)}] (outer) {};
+  \end{scope}
+  \node[font=\footnotesize\bfseries, text=n0!70!black] at (4.95,0.6)
+       {Modèle open source $a\in A$ (répété $K$ fois : \code{llama3.1:8b}, \code{qwen2.5:7b}, \code{mistral:7b})};
+  \node[font=\scriptsize\itshape, text=black!60] at (4.95,-4.4)
+       {Total : $K\times L\times m=3\times4\times20=240$ vecteurs de $n=9$ poids (un poids par critère et par agent)};
+\end{tikzpicture}
+\caption{Structure imbriquée des agents : chaque modèle est interrogé sous $L$ profils d'experts, et chaque profil comporte $m$ agents indépendants, distingués par leur graine aléatoire $s$.}
+\label{fig:agents}
+\end{figure}
+
+Les poids sont exprimés sur l'échelle linguistique du tableau~\ref{tab:echelle}, qui est celle de la méthode directe employée dans l'étude originale.
+
+\begin{table}[htbp]
+\centering
+\caption{Échelle de préférences et valeurs numériques associées.}
+\label{tab:echelle}
+\begin{tabular}{cl@{\qquad}cl}
+\toprule
+Valeur & Préférence & Valeur & Préférence \\
+\midrule
+1 & Importance faible & 6 & Entre forte et très forte \\
+2 & Entre faible et modérée & 7 & Importance très forte \\
+3 & Importance modérée & 8 & Entre très forte et extrême \\
+4 & Entre modérée et forte & 9 & Importance extrême \\
+5 & Importance forte & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Niveau 0 : génération des poids par les agents}\label{sec:niveau0}
+
+\paragraph{Construction du prompt} Pour chaque agent, le prompt précise : (i) le profil d'expert à incarner, (ii) le problème de décision, (iii) la liste des critères, (iv) l'échelle de 1 à 9 et (v) le format de réponse attendu. Il rappelle aussi que d'autres profils répondent en parallèle, afin que l'agent exprime les priorités propres à son domaine. Le gabarit retenu est le suivant (les éléments entre chevrons sont substitués automatiquement) :
+\begin{quote}
+\small\itshape
+You are an expert acting as a <PROFILE> specialist in a spatial multi-criteria decision analysis for <PROBLEM>. Considering the criteria <LIST OF CRITERIA>, assign to each criterion an integer weight from 1 (low importance) to 9 (extreme importance), according to its importance from the point of view of your expertise. Other expert groups will provide their own weights, so your answer must reflect the priorities specific to your field. Reply only with a JSON object mapping each criterion name to its integer weight.
+\end{quote}
+Le prompt est rédigé en anglais, langue des noms de critères et de profils dans les données publiées. Dans la collecte principale, les critères y sont énumérés dans un ordre fixe, l'ordre alphabétique des noms anglais, qui est aussi l'ordre des lignes des fichiers de données. Cet ordre identique pour tous les agents se révélera important (section~\ref{sec:biais}).
+
+\paragraph{Diversité des agents} Les $m$ agents d'un même couple $(a,e)$ utilisent le même prompt. Leur diversité provient de l'échantillonnage aléatoire du modèle : on fixe une température\footnote{La température est un paramètre qui règle le caractère aléatoire du choix des mots par le modèle. À température 0, le modèle donne presque toujours la même réponse ; plus elle est élevée, plus les réponses varient.} strictement positive et une graine aléatoire\footnote{La graine (\emph{seed}) initialise le générateur de nombres aléatoires : avec la même graine, les mêmes paramètres et le même modèle, le tirage est reproductible.} différente par agent. À température nulle, les $m$ agents seraient quasiment identiques et le filtrage statistique du niveau suivant n'aurait plus de sens.
+
+\paragraph{Extraction et validation} La réponse de chaque agent est analysée automatiquement. Elle est acceptée si elle contient exactement les $n$ critères attendus, avec des entiers compris entre 1 et 9. Dans le cas contraire, la requête est relancée avec une nouvelle graine, dans la limite de $r$ essais, et l'échec est consigné. Toutes les réponses brutes sont conservées pour garantir la traçabilité.
+
+\subsection{Niveau 1 : suppression des valeurs aberrantes et agrégation}
+
+Pour chaque couple $(a,e)$ et chaque critère $c_i$, on considère les $m$ poids $\{w_i^{(a,e,s)}\}_s$. On calcule leur premier quartile $Q_1$ et leur troisième quartile $Q_3$\footnote{Le premier quartile est la valeur en dessous de laquelle se trouvent 25~\% des observations ; le troisième quartile, celle en dessous de laquelle se trouvent 75~\%. On les calcule par interpolation linéaire entre les valeurs ordonnées.}, puis l'écart interquartile $\mathrm{IQR}=Q_3-Q_1$. Selon la règle de Tukey~\cite{tukey}, un poids est écarté s'il sort de l'intervalle suivant :
+\begin{equation}\label{eq:iqr}
+  \bigl[\,Q_1-1{,}5\,\mathrm{IQR},\ Q_3+1{,}5\,\mathrm{IQR}\,\bigr].
+\end{equation}
+Soit $S_{a,e,i}$ l'ensemble des agents conservés. Le poids ajusté est la moyenne des poids conservés :
+\begin{equation}\label{eq:wprime}
+  W'_{a,e}[i]=\frac{1}{|S_{a,e,i}|}\sum_{s\in S_{a,e,i}} w_i^{(a,e,s)} .
+\end{equation}
+On agrège ensuite sur les modèles pour obtenir, pour chaque profil $e$, un vecteur de poids de taille $n$ :
+\begin{equation}\label{eq:wbar}
+  \Wbar_e=\frac{1}{K}\sum_{a\in A} W'_{a,e}\ \in[1,9]^n .
+\end{equation}
+
+\subsection{Niveau 2 : négociation et consensus}
+
+\paragraph{Mesure de l'accord} On empile les vecteurs des profils dans la matrice $M^{(0)}=[\Wbar_{e_1}\cdots\Wbar_{e_L}]\in\mathbb{R}^{n\times L}$. Pour chaque profil (colonne), les critères sont classés par poids décroissant ; on note $r_{ie}$ le rang du critère $c_i$ pour le profil $e$ (rangs moyens en cas d'égalité\footnote{Lorsque deux critères ont le même poids, on leur attribue la moyenne des rangs qu'ils occuperaient. Une implémentation naïve qui départage les égalités par l'ordre des lignes introduit un biais.}). Avec $R_i=\sum_e r_{ie}$ et $\bar R=L(n+1)/2$, le coefficient de concordance de Kendall~\cite{kendall} est
+\begin{equation}\label{eq:kendall}
+  W_K=\frac{12\,S}{L^2\,(n^3-n)},\qquad S=\sum_{i=1}^{n}\bigl(R_i-\bar R\bigr)^2 .
+\end{equation}
+Il vaut 0 en l'absence d'accord entre profils et 1 lorsque tous les profils classent les critères dans le même ordre\footnote{Le script de l'étude originale calcule une variante de cette quantité, qui ne coïncide pas avec la formule standard ci-dessus. Sur les poids initiaux publiés, nous obtenons $W_K\approx0{,}433$ avec la formule standard, contre $0{,}858$ avec le script. Dans ce projet, nous utilisons la formule standard.}.
+
+\paragraph{Négociation itérative} À chaque itération $t$, chaque profil rapproche ses poids de la moyenne des profils, selon un taux d'ajustement $\alpha\in[0,1]$ :
+\begin{align}
+  \Wmoy^{(t)} &= \frac{1}{L}\sum_{e\in E}\Wbar_e^{(t)}, \label{eq:moy}\\
+  \Wbar_e^{(t+1)} &= \alpha\,\Wbar_e^{(t)}+(1-\alpha)\,\Wmoy^{(t)} . \label{eq:maj}
+\end{align}
+Après la mise à jour, on recalcule $W_K^{(t+1)}$. Le processus s'arrête lorsque
+\begin{equation}\label{eq:arret}
+  \bigl|W_K^{(t+1)}-W_K^{(t)}\bigr|<\varepsilon
+\end{equation}
+ou lorsque le nombre maximal d'itérations $t_{\max}$ est atteint. Les paramètres retenus, identiques à ceux de l'étude originale, sont $\alpha=0{,}5$, $\varepsilon=10^{-4}$ et $t_{\max}=100$, avec des essais complémentaires pour $\alpha\in\{0{,}3;\,0{,}7\}$ et une grille $\alpha\in\{0{,}05;\,0{,}10;\dots;\,0{,}95\}$.
+
+\paragraph{Poids finaux} À la convergence, le poids final de chaque critère est la moyenne des profils :
+\begin{equation}\label{eq:final}
+  w_i^*=\frac{1}{L}\sum_{e\in E}\Wbar_e^{(T)}[i],\qquad \hat w_i=\frac{w_i^*}{\sum_{j=1}^{n}w_j^*}.
+\end{equation}
+Les poids $w_i^*$ restent sur l'échelle de 1 à 9 pour la comparaison avec l'étude originale, tandis que les poids normalisés $\hat w_i$ (de somme égale à 1) sont ceux qui serviraient à la somme pondérée dans le SIG.
+
+\paragraph{Propriété de conservation de la moyenne} La mise à jour~\eqref{eq:maj} possède une propriété simple mais importante pour l'interprétation des résultats. En moyennant~\eqref{eq:maj} sur les profils, on obtient
+\begin{equation}\label{eq:conservation}
+  \Wmoy^{(t+1)}=\alpha\,\Wmoy^{(t)}+(1-\alpha)\,\Wmoy^{(t)}=\Wmoy^{(t)},
+\end{equation}
+donc la moyenne est invariante au cours des itérations. De plus, l'écart de chaque profil à cette moyenne est multiplié par $\alpha$ à chaque étape :
+\begin{equation}\label{eq:contraction}
+  \Wbar_e^{(t)}-\Wmoy=\alpha^{t}\bigl(\Wbar_e^{(0)}-\Wmoy\bigr).
+\end{equation}
+Deux conséquences en découlent. D'une part, les poids finaux~\eqref{eq:final} sont égaux à la simple moyenne des vecteurs $\Wbar_e$ obtenus au niveau 1 : la négociation ne modifie pas la valeur des poids finaux, elle rapproche seulement les profils les uns des autres. D'autre part, $W_K$ tend vers 1 par construction, puisque tous les profils finissent par adopter le même classement. Le coefficient de Kendall est donc ici un indicateur de suivi de la convergence, et non une validation indépendante de la qualité du consensus. La figure~\ref{fig:negociation-orig} l'illustre sur les données publiques de l'étude originale ; nous y reviendrons dans la discussion.
+
+\subsection{Algorithme complet}
+
+L'enchaînement des étapes est résumé par l'organigramme de la figure~\ref{fig:organigramme} et par l'algorithme~\ref{alg:walmas}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize, node distance=3mm]
+  \tikzset{st/.style={box=9.6cm, minimum height=6.5mm, inner sep=2pt}}
+  \node[st, fill=n2!10] (e) {Entrées : $A$, $E$, $C$, $m$, température, graines, $r$, $\alpha$, $\varepsilon$, $t_{\max}$};
+  \node[st, fill=n0!8, below=of e] (p) {Pour chaque $(a,e)$ et chaque agent $s$ : générer le prompt,\\ interroger le modèle (sortie contrainte par schéma JSON)};
+  \node[st, fill=n0!8, below=of p] (v) {Validation (9 critères, entiers dans $[1,9]$) ; sinon nouvel essai\\ avec la graine $s+1000k$ ($k<r$) ; journaliser la réponse brute};
+  \node[st, fill=n1!8, below=of v] (i) {Pour chaque $(a,e)$ et critère $i$ : écarter les valeurs hors de\\ $[Q_1-1{,}5\,\mathrm{IQR},\ Q_3+1{,}5\,\mathrm{IQR}]$};
+  \node[st, fill=n1!8, below=of i] (mo) {Moyenne des poids conservés $\to W'_{a,e}$,\\ puis moyenne sur les modèles $\to \Wbar_e$};
+  \node[st, fill=n2!8, below=of mo] (in) {Initialiser $M^{(0)}=[\Wbar_{e_1},\dots,\Wbar_{e_L}]$, calculer $W_K^{(0)}$};
+  \node[st, fill=n2!8, below=of in] (ng) {Négociation : $\Wbar_e^{(t+1)}=\alpha\Wbar_e^{(t)}+(1-\alpha)\Wmoy^{(t)}$,\\ recalculer $W_K^{(t+1)}$};
+  \node[draw=black!55, diamond, aspect=3.2, fill=yellow!12, inner sep=1pt, align=center, below=of ng] (d)
+        {$|W_K^{(t+1)}-W_K^{(t)}|<\varepsilon$\\ ou $t=t_{\max}$ ?};
+  \node[st, fill=n0!12, font=\footnotesize\bfseries, below=of d] (f) {Poids finaux $w^*$ = moyenne des $\Wbar_e$ à convergence ; $\hat w=w^*/\textstyle\sum_j w^*_j$};
+  \foreach \a/\b in {e/p, p/v, v/i, i/mo, mo/in, in/ng, ng/d} \draw[arr] (\a) -- (\b);
+  \draw[arr] (d) -- node[right, font=\scriptsize]{oui} (f);
+  \draw[arr] (d.west) -- ++(-1.1,0) node[above, font=\scriptsize, pos=0.5]{non} |- (ng.west);
+\end{tikzpicture}
+\caption{Organigramme de l'algorithme : niveau 0 (bleu), niveau 1 (orange) et niveau 2 (vert).}
+\label{fig:organigramme}
+\end{figure}
+
+\begin{algorithm}[htbp]
+\caption{WALMAS avec modèles open source}\label{alg:walmas}
+\begin{algorithmic}[1]
+\Require $A$, $E$, $C$, $m$, $r$, température $\tau$, $\alpha$, $\varepsilon$, $t_{\max}$
+\Ensure Poids finaux $w^*$ et poids normalisés $\hat w$
+\For{$(a,e)\in A\times E$}
+  \For{$s=0$ \textbf{à} $m-1$}
+    \State construire le prompt pour le profil $e$ ; $k\gets 0$
+    \Repeat
+      \State interroger $a$ avec la graine $s+1000k$ et la température $\tau$ ; $k\gets k+1$
+    \Until{réponse valide \textbf{ou} $k=r$} \Comment{échec consigné si $k=r$}
+    \State $\mathbf{w}^{(a,e,s)}\gets$ poids extraits ; journaliser la réponse brute
+  \EndFor
+  \For{$i=1$ \textbf{à} $n$}
+    \State écarter les poids hors de $[Q_1-1{,}5\,\mathrm{IQR},\,Q_3+1{,}5\,\mathrm{IQR}]$
+    \State $W'_{a,e}[i]\gets$ moyenne des poids conservés
+  \EndFor
+\EndFor
+\For{$e\in E$}
+  \State $\Wbar_e\gets\frac{1}{K}\sum_{a\in A}W'_{a,e}$
+\EndFor
+\State $M^{(0)}\gets[\Wbar_{e_1}\cdots\Wbar_{e_L}]$ ; $t\gets0$ ; calculer $W_K^{(0)}$
+\Repeat
+  \State $\Wmoy\gets\frac{1}{L}\sum_e\Wbar_e^{(t)}$
+  \State $\Wbar_e^{(t+1)}\gets\alpha\Wbar_e^{(t)}+(1-\alpha)\Wmoy$ pour tout $e\in E$
+  \State calculer $W_K^{(t+1)}$ ; $t\gets t+1$
+\Until{$|W_K^{(t)}-W_K^{(t-1)}|<\varepsilon$ \textbf{ou} $t=t_{\max}$}
+\State $w_i^*\gets\frac{1}{L}\sum_e\Wbar_e^{(t)}[i]$ ; $\hat w_i\gets w_i^*/\sum_j w_j^*$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Mise en œuvre avec des modèles open source}
+
+Le remplacement des modèles propriétaires par des modèles open source ne modifie pas l'algorithme, mais impose plusieurs choix pratiques.
+
+\paragraph{Choix des modèles} Nous retenons $K=3$ modèles issus de familles différentes, afin de conserver la diversité des sources d'apprentissage qui motive l'usage de plusieurs LLM. Ils doivent être (i) disponibles en poids ouverts avec une licence compatible avec un usage académique, (ii) adaptés aux instructions\footnote{Un modèle « instruct » a été affiné pour suivre des consignes et répondre à des questions, contrairement à un modèle de base qui se contente de prolonger un texte.}, et (iii) de taille compatible avec les ressources de calcul disponibles, éventuellement en version quantifiée\footnote{La quantification réduit la précision numérique des paramètres du modèle (par exemple de 16 à 4 bits) pour diminuer l'occupation mémoire, au prix d'une légère perte de qualité.}. Les modèles retenus sont présentés à la section~\ref{sec:impl-n0}.
+
+\paragraph{Reproductibilité} Pour que les expériences soient reproductibles, nous consignons pour chaque exécution : l'identifiant et l'empreinte exacte de chaque modèle, le niveau de quantification, la température, les graines aléatoires, le prompt complet et l'ensemble des réponses brutes. Les données et le code accompagnent le rapport.
+
+\paragraph{Données de comparaison} Les poids de l'étude originale étant publics, ils servent de point de comparaison direct : nous comparons nos distributions de poids, nos classements et nos poids finaux à ceux obtenus avec GPT-4o, Gemini et Copilot.
+
+\subsection{Cas d'étude et protocole d'évaluation}\label{sec:protocole}
+
+\paragraph{Cas d'étude} Pour permettre la comparaison, nous reprenons le problème de sélection d'un site de décharge de l'étude originale. Il comporte $n=9$ critères : aquifères et eaux de surface, conditions climatiques, sensibilité écologique, géologie, conformité réglementaire, zones habitées et centres urbains, pente, topographie, développement urbain et localisation des infrastructures. Les $L=4$ profils d'experts sont : environnement et ressources naturelles (ENR), géographie et SIG (GGIS), génie civil et urbanisme (CEUP), économie et société (ES). Chaque couple $(a,e)$ comporte $m=20$ agents.
+
+\paragraph{Indicateurs d'évaluation} Les résultats sont évalués selon les axes suivants :
+\begin{enumerate}[label=\arabic*.,start=0,leftmargin=*]
+  \item \textbf{Filtre IQR} : nombre et proportion de poids écartés, par modèle et par profil, et effet du filtre sur les poids finaux ($\max_i|w^*_i{}^{\text{avec IQR}}-w^*_i{}^{\text{sans IQR}}|$).
+  \item \textbf{Distribution des poids initiaux} : moyenne et écart-type par critère, par modèle et par profil.
+  \item \textbf{Similarité entre modèles} : corrélation de rang de Spearman\footnote{Le coefficient de Spearman mesure à quel point deux classements se ressemblent : il vaut 1 si les classements sont identiques, $-1$ s'ils sont inversés et 0 s'ils ne sont pas liés.}~\cite{spearman} entre les classements des critères produits par chaque modèle.
+  \item \textbf{Comparaison avec l'étude originale} : corrélation de rang (Spearman $\rho$ et $\tau$ de Kendall\footnote{Le $\tau$ de Kendall est une autre mesure de corrélation de rang, fondée sur la proportion de paires de critères classées dans le même ordre par les deux classements.}) et écart moyen absolu (MAE\footnote{\emph{Mean Absolute Error} : moyenne, sur les critères, de la valeur absolue de la différence entre deux poids.}) entre nos poids finaux et ceux de~\cite{vahidnia}, définis par
+  \begin{equation}\label{eq:spearman}
+    \rho=1-\frac{6\sum_i d_i^2}{n(n^2-1)},\qquad \mathrm{MAE}=\frac{1}{n}\sum_{i=1}^{n}\bigl|w_i^*-w_i^{\mathrm{ref}}\bigr|,
+  \end{equation}
+  où $d_i$ est la différence de rang du critère $c_i$ entre les deux classements (formule valable sans égalités).
+  \item \textbf{Convergence} : nombre d'itérations et évolution de $W_K$ pour $\alpha\in\{0{,}3;\,0{,}5;\,0{,}7\}$, puis pour la grille de $\alpha$.
+  \item \textbf{Sensibilité aux profils} : variation des poids finaux lorsqu'un profil est retiré.
+  \item \textbf{Stabilité statistique} : intervalles de confiance à 95~\%\footnote{Intervalle dans lequel la valeur estimée se trouverait dans 95~\% des cas si l'on répétait l'expérience ; ici approché par rééchantillonnage.} des poids finaux et proportion de rééchantillonnages qui conservent le rang de chaque critère, estimés par \emph{bootstrap}\footnote{Le \emph{bootstrap} consiste à tirer au hasard, avec remise, de nouveaux échantillons parmi les données observées et à recalculer le résultat sur chacun, pour mesurer sa variabilité.}~\cite{efron} sur les agents ($B=1\,000$). Faute de temps, ce rééchantillonnage remplace la répétition complète de la collecte avec d'autres graines prévue initialement ; ce n'est qu'une approximation (section~\ref{sec:limites}).
+  \item \textbf{Référence sans négociation} : écart entre les poids finaux et la moyenne simple des profils, qui, d'après la propriété de conservation, doit être nul aux erreurs d'arrondi près.
+  \item \textbf{Biais de position} : pour chaque réponse, corrélation de Spearman entre le poids attribué à un critère et son antériorité dans la liste du prompt,
+  \begin{equation}\label{eq:rhopos}
+    \rho_{\mathrm{pos}}^{(a,e,s)}=\rho_S\Bigl(\bigl(w^{(a,e,s)}_{\pi_s(1)},\dots,w^{(a,e,s)}_{\pi_s(n)}\bigr),\ (n,n-1,\dots,1)\Bigr),
+  \end{equation}
+  où $\pi_s(k)$ désigne le critère présenté en $k$-ième position à l'agent $s$. Une valeur positive signifie que les critères cités en premier reçoivent les poids les plus élevés.
+  \item \textbf{Expérience de contrôle} : nouvelle collecte où l'ordre des critères est tiré au hasard pour chaque agent (section~\ref{sec:controle}).
+\end{enumerate}
+La confrontation à l'avis d'experts humains et la production de la carte d'aptitude finale n'ont pas pu être réalisées ; elles font partie des perspectives.
+
+% ================================================================ 5
+\section{Implémentation}\label{sec:impl}
+
+L'implémentation a été menée en deux temps. Nous avons d'abord réalisé et validé le cœur de la méthode (niveaux 1 et 2) sans aucun LLM, en l'alimentant avec les poids publiés par l'étude originale~\cite{masllms}. Les agents open source du niveau 0 ont ensuite été branchés sur ce cœur déjà vérifié. Ainsi, tout écart observé entre nos poids et ceux de la référence peut être attribué aux modèles, et non à une erreur de calcul. Le développement du code a bénéficié de l'assistance d'un outil d'IA générative pour la programmation ; sa validité repose sur les tests automatisés de la section~\ref{sec:tests} et sur la confrontation aux valeurs publiées de l'étude originale (section~\ref{sec:valid}).
+
+\subsection{Architecture logicielle}
+
+Le code est un paquet Python (\code{walmas}, dépendances : NumPy, SciPy, pandas ; Matplotlib pour les figures) organisé en modules indépendants, chacun correspondant à une étape de l'algorithme~\ref{alg:walmas} (figure~\ref{fig:logiciel}) :
+\begin{itemize}
+  \item \code{llm/agents.py} (niveau 0) construit les prompts et le schéma JSON, interroge Ollama, valide les réponses, gère les graines et les nouveaux essais, et écrit les fichiers de données et le journal des réponses brutes ;
+  \item \code{core/iqr.py} (niveau 1) réalise le filtrage de Tukey et la moyenne ajustée (équations~\eqref{eq:iqr} et~\eqref{eq:wprime}) ;
+  \item \code{core/negotiation.py} (niveau 2) réalise la négociation itérative (équations~\eqref{eq:moy} à~\eqref{eq:arret}) en conservant l'historique de $\Wbar_e^{(t)}$ et de $W_K^{(t)}$, et \code{core/kendall.py} calcule le coefficient de concordance (équation~\eqref{eq:kendall}) ;
+  \item \code{core/pipeline.py} charge les données et enchaîne les niveaux 1 et 2 (équations~\eqref{eq:wbar} et~\eqref{eq:final}) ;
+  \item \code{analysis.py} implémente les indicateurs 0 à 8 du protocole sous forme de fonctions pures ;
+  \item les scripts \code{scripts/collect.py} (collecte du niveau 0) et \code{scripts/evaluate.py} (tableaux CSV, figures et résumé \code{summary.md} dans \code{results/<nom>/}) servent de points d'entrée en ligne de commande.
+\end{itemize}
+Une interface Streamlit\footnote{Streamlit est une bibliothèque Python qui permet de construire rapidement une application web interactive à partir d'un script.} (\code{app/streamlit\_app.py}, dépendance optionnelle) permet de rejouer la méthode de manière interactive : choix du jeu de données, de $\alpha$ et du coefficient de Tukey, visualisation des niveaux 0 à 2, des résultats et de l'analyse critique, et interrogation en direct d'un modèle Ollama.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\scriptsize]
+  \tikzset{
+    md/.style={box=4.1cm, fill=#1!8, draw=#1!70!black, line width=0.7pt},
+    dt/.style={box=4.1cm, fill=gin!8, draw=gin},
+    tt/.style={font=\footnotesize\ttfamily\bfseries, text=#1!70!black}}
+  \node[box=4.1cm, fill=yellow!10, draw=yellow!50!black] (ol) at (-5.3,0)
+     {\textbf{Serveur Ollama 0.40.15} (local)\\ \code{llama3.1:8b} · \code{qwen2.5:7b}\\ \code{mistral:7b} (Q4\_K\_M)};
+  \node[md=gin] (col) at (0,0) {{\footnotesize\ttfamily\bfseries scripts/collect.py}\\ collecte du niveau 0\\ (modèles, $m$, température, graines)};
+  \node[dt] (dor) at (5.3,0) {{\footnotesize\ttfamily\bfseries data/original/}\\ 12 CSV publiés (3 modèles $\times$ 4 profils)\\ matrices $9\times20$};
+  \node[md=n0] (ag) at (0,-1.9) {{\footnotesize\ttfamily\bfseries llm/agents.py}\quad Niveau 0\\ prompts, schéma JSON, appels HTTP,\\ validation, essais, journalisation};
+  \node[dt] (dos) at (-5.3,-3.8) {{\footnotesize\ttfamily\bfseries data/opensource/}\\ 12 CSV $9\times20$ + \code{raw/responses.jsonl}\\ + \code{run\_config.json}};
+  \node[md=n2!50!n0] (pip) at (0,-3.8) {{\footnotesize\ttfamily\bfseries core/pipeline.py}\\ chargement des CSV,\\ enchaînement des niveaux 1--2};
+  \node[box=4.1cm, dashed, draw=gin] (tst) at (5.3,-3.8) {{\footnotesize\ttfamily\bfseries tests/} + intégration continue\\ 40 tests \code{pytest} (GitHub Actions)\\ client Ollama simulé, sans réseau};
+  \node[md=n1] (iq) at (-5.3,-5.7) {{\footnotesize\ttfamily\bfseries core/iqr.py}\quad Niveau 1\\ filtre de Tukey (éq.~\ref{eq:iqr}--\ref{eq:wprime})};
+  \node[md=n2] (ng) at (0,-5.7) {{\footnotesize\ttfamily\bfseries core/negotiation.py}\quad Niveau 2\\ négociation (éq.~\ref{eq:moy}--\ref{eq:arret})};
+  \node[md=n2] (kd) at (5.3,-5.7) {{\footnotesize\ttfamily\bfseries core/kendall.py}\quad Niveau 2\\ $W_K$ standard (éq.~\ref{eq:kendall})\\ + variante du script original};
+  \node[md=violet] (an) at (0,-7.6) {{\footnotesize\ttfamily\bfseries analysis.py} + {\footnotesize\ttfamily\bfseries scripts/evaluate.py}\\ indicateurs 0--8, figures};
+  \node[dt, fill=n0!6] (res) at (5.3,-7.6) {{\footnotesize\ttfamily\bfseries results/<nom>/}\\ tableaux CSV, figures PNG,\\ \code{summary.md}};
+  \node[md=gin] (app) at (-5.3,-7.6) {{\footnotesize\ttfamily\bfseries app/streamlit\_app.py}\\ interface Streamlit interactive\\ (niveaux 0--2, agent en direct)};
+  \draw[arr] (col) -- (ag);
+  \draw[arr, <->] (ol.south) |- node[pos=0.75, above, font=\tiny]{HTTP \code{/api/chat}} (ag.west);
+  \draw[arr] (ag.south west) -- (dos.north east);
+  \draw[arr] (dos) -- (pip);
+  \draw[arr] (dor.south west) -- (pip.north east);
+  \draw[arr] (pip.south west) -- (iq.north east);
+  \draw[arr] (pip) -- (ng);
+  \draw[arr] (ng) -- node[above, font=\tiny]{$\Wbar_e^{(t)}$} (kd);
+  \draw[arr] (iq) -- node[above, font=\tiny]{$\Wbar_e$} (ng);
+  \draw[arr] (ng) -- (an);
+  \draw[arr] (an) -- (res);
+  \draw[arr] (app) -- (an);
+\end{tikzpicture}
+\caption{Architecture logicielle. Les modules colorés suivent les niveaux de la figure~\ref{fig:archi} (bleu : niveau 0, orange : niveau 1, vert : niveau 2) ; le niveau 0, prévu dans la version préliminaire, est désormais implémenté et branché sur le même \code{pipeline.py} que les données publiées.}
+\label{fig:logiciel}
+\end{figure}
+
+Les deux jeux de données ont le même format : 12 fichiers \code{\{Modèle\}\_G\{1..4\}.csv} (3 modèles $\times$ 4 profils, dans l'ordre ENR, GGIS, CEUP, ES), chacun contenant une matrice de $n=9$ critères (lignes, en ordre alphabétique) par $m=20$ agents (colonnes), à valeurs entières dans $\{1,\dots,9\}$. Le même code évalue donc indifféremment les poids publiés et nos poids open source.
+
+\subsection{Niveau 0 : collecte auprès des modèles open source}\label{sec:impl-n0}
+
+\paragraph{Modèles et environnement d'exécution} Les modèles sont exécutés localement par Ollama~\cite{ollama}\footnote{Ollama est un logiciel libre qui télécharge des modèles en poids ouverts et les sert localement par une interface HTTP, sans envoyer de données à un tiers.}, version 0.40.15. Nous retenons trois familles distinctes : Llama~3.1 (Meta)~\cite{llama3}, Qwen2.5 (Alibaba)~\cite{qwen25} et Mistral~7B (Mistral AI)~\cite{mistral}, toutes en version adaptée aux instructions et quantifiée au format Q4\_K\_M\footnote{Format de quantification d'Ollama et de llama.cpp où la plupart des paramètres sont stockés sur environ 4 bits ; un modèle de 8 milliards de paramètres occupe alors un peu moins de 5 Go de mémoire.}. Le tableau~\ref{tab:modeles} donne leurs étiquettes Ollama et leurs empreintes (\emph{digests})\footnote{L'empreinte est un identifiant calculé à partir du contenu exact du fichier du modèle : deux modèles de même empreinte sont strictement identiques, ce qui fixe la version utilisée.}, relevées automatiquement dans \code{data/opensource/run\_config.json}. La collecte a été réalisée sur un ordinateur portable Apple M1 doté de 16~Go de mémoire.
+
+\begin{table}[htbp]
+\centering
+\caption{Modèles open source utilisés au niveau 0 (Ollama 0.40.15).}
+\label{tab:modeles}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llcl@{}}
+\toprule
+Modèle (paramètres) & Étiquette Ollama & Quantif. & Empreinte (\emph{digest}) \\
+\midrule
+Llama 3.1 (8,0 G) & \code{llama3.1:8b} & Q4\_K\_M & {\scriptsize\ttfamily 46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e} \\
+Qwen2.5 (7,6 G) & \code{qwen2.5:7b} & Q4\_K\_M & {\scriptsize\ttfamily 845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e} \\
+Mistral (7,2 G) & \code{mistral:7b} & Q4\_K\_M & {\scriptsize\ttfamily 6577803aa9a036369e481d648a2baebb381ebc6e897f2bb9a766a2aa7bfbc1cf} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Sortie contrainte par schéma JSON} Plutôt que d'extraire les poids d'un texte libre, chaque requête transmet à Ollama un schéma JSON\footnote{Un schéma JSON décrit la structure attendue d'un document JSON (clés obligatoires, types, bornes). Ollama s'en sert pour restreindre, au moment de la génération, les mots que le modèle a le droit de produire.} (champ \code{format}) qui impose un objet dont les clés sont exactement les 9 critères, chacun associé à un entier compris entre 1 et 9, sans clé supplémentaire. La réponse est ensuite revalidée par notre propre analyseur (\code{parse\_weights}) : noms de critères comparés sans tenir compte de la casse ni des espaces, valeurs acceptées sous la forme \code{7}, \code{7.0} ou \code{"7"}, et rejet des clés manquantes ou en trop, des valeurs non entières, booléennes ou hors de $[1,9]$.
+
+\paragraph{Température, graines et nouveaux essais} La température est fixée à $0{,}7$. L'agent $s\in\{0,\dots,19\}$ reçoit la graine $s$ ; en cas de réponse invalide, l'essai $k$ utilise la graine $s+1000\,k$, car une graine inchangée reproduirait la même réponse. On autorise au plus $r=3$ essais. Les mêmes graines sont utilisées pour tous les couples (modèle, profil).
+
+\paragraph{Traçabilité} Chaque appel (y compris les essais invalides) est ajouté au journal \code{raw/responses.jsonl} avec l'horodatage, le modèle, le profil, l'agent, le numéro d'essai, la graine, la température, le prompt complet, l'ordre des critères présenté, la réponse brute et le diagnostic de validation. Le fichier \code{run\_config.json} conserve la version d'Ollama, les empreintes, les paramètres et le gabarit du prompt. La collecte reprend automatiquement là où elle s'est arrêtée (un fichier CSV déjà présent est sauté) et traite les modèles l'un après l'autre pour éviter de les charger simultanément en mémoire. L'encadré ci-dessous reproduit la première réponse brute de la collecte.
+
+\begin{tcolorbox}[colback=gin!5, colframe=gin!70, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  title={\small Exemple de réponse brute (\code{llama3.1:8b}, profil ENR, agent 0, essai 0, graine 0, température 0,7)}, fonttitle=\bfseries]
+\scriptsize\ttfamily
+\{"Aquifers and Surface Water": 8, "Climate and Weather Conditions": 3, "Ecological Sensitivity": 9, "Geology": 7, "Regulatory Compliance": 6, "Settlements and Urban Centers": 4, "Slope": 2, "Topography": 2, "Urban Development and Infrastructure Location": 1\}\\[2pt]
+\normalfont\footnotesize
+Validation : réponse valide. Le poids décroît presque régulièrement avec la position du critère dans la liste du prompt (Spearman $\rho_{\mathrm{pos}}=0{,}79$, équation~\eqref{eq:rhopos}).
+\end{tcolorbox}
+
+\subsection{Choix d'implémentation des niveaux 1 et 2}
+
+Quatre choix méritent d'être explicités, car chacun peut modifier les résultats.
+\begin{itemize}
+  \item \textbf{Quantiles.} $Q_1$ et $Q_3$ sont calculés par interpolation linéaire, comme dans l'étude originale ; c'est aussi le choix par défaut de NumPy.
+  \item \textbf{Rangs et égalités.} Les rangs sont calculés avec attribution du rang moyen en cas d'égalité, puis $W_K$ suit la formule~\eqref{eq:kendall}. Une option de correction des égalités est disponible mais n'est pas utilisée dans les résultats rapportés.
+  \item \textbf{Variante de l'étude originale.} La variante de $W_K$ du script de référence est implémentée à part, avec l'unique objectif de reproduire et d'expliquer l'écart avec la formule standard.
+  \item \textbf{Bornes $[1,9]$.} Le script original tronque les poids à $[1,9]$ à chaque itération. Cette opération est sans effet puisque la mise à jour~\eqref{eq:maj} est une combinaison convexe de valeurs de $[1,9]$ ; nous ne la reprenons donc pas.
+\end{itemize}
+Un point de vigilance concerne le filtrage IQR : lorsque les agents sont presque unanimes ($Q_1=Q_3$), l'intervalle~\eqref{eq:iqr} se réduit à un point et tout écart à cette valeur, même d'une unité, est écarté. Ce comportement est conforme à la règle de Tukey ; le code expose le masque des poids conservés pour mesurer la proportion de rejets et compter ces cas d'« IQR nul ».
+
+\subsection{Validation du code}\label{sec:tests}
+
+La validation repose sur 40 tests automatisés\footnote{Un test automatisé est un petit programme qui exécute une partie du code sur un cas connu et vérifie que le résultat est celui attendu ; on les relance à chaque modification.} (16 pour le cœur, 14 pour le niveau 0, 7 pour les indicateurs, 3 pour l'application), résumés dans le tableau~\ref{tab:tests} et exécutés à chaque modification par intégration continue\footnote{L'intégration continue relance automatiquement l'installation et l'ensemble des tests sur un serveur (ici GitHub Actions, Python 3.11) à chaque envoi de code.}. Les tests du niveau 0 remplacent Ollama par un faux client qui renvoie des réponses prédéfinies, sans accès au réseau.
+
+\begin{table}[htbp]
+\centering
+\caption{Principaux tests de validation (40 tests \code{pytest}).}
+\label{tab:tests}
+\small
+\begin{tabular}{@{}p{4.3cm}p{10.9cm}@{}}
+\toprule
+Objet testé & Critère de réussite \\
+\midrule
+Données de référence & 12 matrices de forme $9\times20$, valeurs entières dans $[1,9]$ \\
+$W_K$ aux extrêmes & $W_K=1$ si tous les profils classent identiquement ; $W_K=0$ pour deux classements opposés ; rangs moyens en cas d'égalité \\
+$W_K$ sur les poids publiés & 0,433 (formule standard) et 0,858 (variante du script original) \\
+Filtre IQR & valeur aberrante écartée ; cas d'IQR nul ; au moins un poids conservé par critère ; 80 rejets sur les données publiées \\
+Conservation de la moyenne & équation~\eqref{eq:conservation} vérifiée à $10^{-12}$ près, pour $\alpha\in\{0{,}3;0{,}5;0{,}7\}$ \\
+Contraction géométrique & équation~\eqref{eq:contraction} vérifiée à $10^{-12}$ près \\
+Poids finaux & $w^*$ égal à la moyenne simple des $\Wbar_e$ ; $\sum_i\hat w_i=1$ ; valeurs du tableau~\ref{tab:poids-orig} \\
+Convergence & 4, 5 et 9 itérations pour $\alpha=0{,}3$, $0{,}5$ et $0{,}7$ sur les poids publiés \\
+Cas dégénérés et entrées aléatoires & poids tous égaux ; un seul profil ; $W_K\to1$ pour des poids tirés au hasard \\
+Prompt et analyseur (niveau 0) & prompt complet ; réponses normalisées acceptées ; rejet des clés manquantes ou en trop, de 0, 10, 7,5, \code{"high"}, \code{true} et du texte non JSON \\
+Essais et reprise (niveau 0) & nouvel essai avec une graine changée ; échec après $r$ essais ; reprise d'une collecte interrompue ; ordre aléatoire dans le prompt mais ordre canonique dans les CSV \\
+Indicateurs & sensibilité aux profils, référence sans négociation, bootstrap sur données synthétiques, biais de position \\
+Application Streamlit & exécution sans erreur sur chaque jeu de données ; $w^*$ affiché identique au pipeline ; agent en direct avec client simulé ; Ollama injoignable géré \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Le test sur des entrées aléatoires mérite d'être souligné : il confirme numériquement que la convergence de $W_K$ vers 1 ne dépend pas de la qualité des poids d'entrée, ce qui étaye l'analyse de la section précédente.
+
+\paragraph{Reproduire les résultats} Après installation du paquet et téléchargement des trois modèles, trois commandes suffisent : \code{scripts/collect.py -{}-out data/opensource} (collecte, avec reprise automatique), puis \code{scripts/evaluate.py} sur \code{data/original} et sur \code{data/opensource} (avec \code{-{}-reference data/original}). Tableaux, figures et résumé sont écrits dans \code{results/<nom>/}.
+
+% ================================================================ 6
+\section{Résultats}\label{sec:resultats}
+
+\subsection{Validation sur les poids publiés de l'étude originale}\label{sec:valid}
+
+À titre de validation, nous appliquons le cœur à l'ensemble des 12 matrices publiées de l'étude originale (2\,160 poids au total). Il faut distinguer deux types de valeurs : celles que l'article~\cite{vahidnia} (ou le script de son dépôt~\cite{masllms}) publie, auxquelles nous pouvons confronter notre code (tableau~\ref{tab:publie}), et celles que nous calculons nous-mêmes sur ses données, qui ne figurent pas dans l'article (tableau~\ref{tab:valid}).
+
+\begin{table}[htbp]
+\centering
+\caption{Nos calculs sur les poids publiés de l'étude originale ($\alpha=0{,}5$ sauf mention contraire). Ces valeurs ne sont pas publiées dans l'article, à l'exception de la variante de $W_K^{(0)}$, que fournit le script du dépôt.}
+\label{tab:valid}
+\small
+\begin{tabular}{@{}p{6.2cm}p{8.9cm}@{}}
+\toprule
+Indicateur & Valeur obtenue \\
+\midrule
+Poids écartés par le filtre IQR & 80 / 2\,160 (3,7~\%) ; ChatGPT 56, Copilot 24, Gemini 0 \\
+Effet du filtre IQR sur $w^*$ & $\max_i|\Delta w_i^*|=0{,}054$ \\
+$W_K^{(0)}$ & 0,433 (formule standard) ; 0,858 (variante du script original) \\
+Itérations jusqu'à convergence & 4, 5 et 9 pour $\alpha=0{,}3$, $0{,}5$ et $0{,}7$ ; $W_K$ final $=1$ \\
+Écart $w^*$ -- moyenne simple des profils & $1{,}8\times10^{-15}$ \\
+Retrait d'un profil, $\max_i|\Delta w_i^*|$ & ENR 1,04 ; GGIS 0,67 ; CEUP 0,52 ; ES 0,77 \\
+Bootstrap ($B=1\,000$) & rang conservé dans au moins 99,9~\% des tirages pour chaque critère \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Filtrage et convergence} Le filtre IQR écarte 80 poids sur 2\,160 (3,7~\%), ce qui confirme que les réponses des agents sont déjà très concentrées. Le coefficient $W_K$ passe de 0,433 à 1 ; avec $\varepsilon=10^{-4}$, la négociation s'arrête après 4, 5 et 9 itérations pour $\alpha=0{,}3$, $0{,}5$ et $0{,}7$ respectivement, ce qui est cohérent avec la contraction en $\alpha^t$ de l'équation~\eqref{eq:contraction}. L'article indique une convergence en environ 4 itérations pour $\alpha=0{,}5$ ; avec $\varepsilon=10^{-4}$ et la formule standard de $W_K$, notre code en compte 5. La figure~\ref{fig:negociation-orig} illustre les trajectoires des quatre profils pour le critère « Pente » : elles convergent exactement vers leur moyenne initiale (5,88), comme le prévoit l'équation~\eqref{eq:conservation}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.49\linewidth]{figures/orig_trajectoires_pente.png}\hfill
+\includegraphics[width=0.49\linewidth]{figures/orig_kendall_W_t.png}
+\caption{Illustration de la négociation sur les poids initiaux publiés par~\cite{masllms}. À gauche : les poids des quatre profils pour le critère « Pente » convergent vers leur moyenne initiale (ligne pointillée). À droite : évolution de $W_K$ (formule standard) pour trois valeurs de $\alpha$.}
+\label{fig:negociation-orig}
+\end{figure}
+
+\paragraph{Poids finaux} Le tableau~\ref{tab:poids-orig} donne les poids finaux obtenus ($\alpha=0{,}5$). La conformité réglementaire, les zones habitées et le développement urbain arrivent en tête ; la topographie et la géologie ferment le classement. Nous retrouvons les poids finaux publiés dans l'article~\cite{vahidnia} : les neuf valeurs coïncident, à l'arrondi près pour la topographie (4,02 dans l'article, 4,03 avec notre code).
+
+\begin{table}[htbp]
+\centering
+\caption{Poids finaux calculés par notre code sur les données publiées de l'étude originale ($\alpha=0{,}5$). Ils coïncident avec ceux de l'article, à l'arrondi près (topographie : 4,02 dans l'article).}
+\label{tab:poids-orig}
+\small
+\begin{tabular}{@{}cl cc@{}}
+\toprule
+Rang & Critère & $w_i^*$ (échelle 1--9) & $\hat w_i$ \\
+\midrule
+1 & Conformité réglementaire & 7,56 & 0,145 \\
+2 & Zones habitées et centres urbains & 7,11 & 0,137 \\
+3 & Développement urbain et infrastructures & 6,80 & 0,131 \\
+4 & Sensibilité écologique & 6,28 & 0,121 \\
+5 & Pente & 5,88 & 0,113 \\
+6 & Conditions climatiques & 5,09 & 0,098 \\
+7 & Aquifères et eaux de surface & 4,90 & 0,094 \\
+8 & Géologie & 4,40 & 0,085 \\
+9 & Topographie & 4,03 & 0,077 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Deux observations} Premièrement, l'effet du filtre IQR est faible : en le désactivant, aucun poids final ne varie de plus de 0,054 point sur l'échelle de 1 à 9. Deuxièmement, le résultat dépend nettement de la composition du panel : en retirant un profil, les poids finaux varient jusqu'à 0,52 point (génie civil et urbanisme), 0,67 (géographie et SIG), 0,77 (économie et société) et 1,04 (environnement et ressources naturelles). Comme la négociation ne modifie pas la moyenne, c'est bien le choix et le nombre des profils, plutôt que l'étape de consensus, qui détermine les poids.
+
+\paragraph{Valeurs publiées et valeurs recalculées} Le tableau~\ref{tab:publie} confronte les cinq valeurs publiées par l'article ou par le script du dépôt à celles de notre code. Deux concordent (poids finaux, variante de $W_K$), trois ne concordent pas.
+
+\begin{table}[htbp]
+\centering
+\caption{Valeurs publiées par l'étude originale (article~\cite{vahidnia} ou script~\cite{masllms}) et valeurs obtenues par notre code sur les mêmes données. « = » : identique ; « $\approx$ » : identique à l'arrondi près ; « $\neq$ » : différent.}
+\label{tab:publie}
+\small
+\begin{tabular}{@{}p{3.8cm}p{1.1cm}p{3.7cm}p{4.9cm}c@{}}
+\toprule
+Grandeur & Source & Valeur publiée & Notre calcul & Accord \\
+\midrule
+Poids finaux $w^*$ ($\alpha=0{,}5$) & article & 7,56 ; 7,11 ; 6,80 ; 6,28 ; 5,88 ; 5,09 ; 4,90 ; 4,40 ; 4,02 & identiques, sauf topographie : 4,03 (tableau~\ref{tab:poids-orig}) & $\approx$ \\
+Itérations ($\alpha=0{,}5$) & article & environ 4 & 5 ($\varepsilon=10^{-4}$, $W_K$ standard) & $\neq$ \\
+$W_K^{(0)}$, variante du script & script & 0,86 & 0,858 & = \\
+Écart-type moyen par modèle (GPT-4o / Copilot / Gemini) & article & 0,3345 / 0,3903 / 0,4398 & 0,3623 / 0,4057 / 0,4763 (définition la plus proche, tableau~\ref{tab:nonrepro}) & $\neq$ \\
+Spearman entre modèles (Gemini--GPT-4o / Copilot--GPT-4o / Gemini--Copilot) & article & 0,33 / 0,43 / 0,53 & 0,828 / 0,900 / 0,921 & $\neq$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Valeurs de l'article non retrouvées} Outre le nombre d'itérations, deux séries de valeurs publiées dans l'article~\cite{vahidnia} ne peuvent pas être retrouvées à partir de ses propres données publiées (tableau~\ref{tab:nonrepro}). L'écart-type moyen des poids par modèle (0,3345 pour GPT-4o, 0,3903 pour Copilot, 0,4398 pour Gemini) n'est reproduit par aucune des quatre définitions essayées (écart-type avec ou sans correction\footnote{L'écart-type « corrigé » divise la somme des carrés des écarts par $m-1$ au lieu de $m$ (paramètre \code{ddof} de NumPy), ce qui le rend légèrement plus grand sur de petits échantillons.}, avant ou après filtrage IQR). L'ordre des modèles est le même et la définition la plus proche (sans correction, avant IQR) donne des valeurs supérieures de 4 à 8~\% (rapport de 0,92 à 0,96). Les corrélations de Spearman entre modèles publiées (0,33 à 0,53) sont, elles, très éloignées de celles que nous obtenons (0,79 à 0,92 avec les poids finaux de chaque modèle ; 0,53 à 0,96 profil par profil ; 0,74 à 0,88 en moyenne sur les paires d'agents).
+
+\begin{table}[htbp]
+\centering
+\caption{Détail des valeurs de l'article~\cite{vahidnia} non retrouvées : nos calculs sur ses données publiées~\cite{masllms}, selon plusieurs définitions.}
+\label{tab:nonrepro}
+\small
+\begin{tabular}{@{}l c cccc@{}}
+\toprule
+& & \multicolumn{4}{c}{Écart-type moyen recalculé} \\
+\cmidrule(l){3-6}
+Modèle & Article & \shortstack{sans corr.\\avant IQR} & \shortstack{corrigé\\avant IQR} & \shortstack{sans corr.\\après IQR} & \shortstack{corrigé\\après IQR} \\
+\midrule
+GPT-4o (ChatGPT) & 0,3345 & 0,3623 & 0,3717 & 0,1955 & 0,2005 \\
+Copilot          & 0,3903 & 0,4057 & 0,4163 & 0,3394 & 0,3482 \\
+Gemini           & 0,4398 & 0,4763 & 0,4887 & 0,4763 & 0,4887 \\
+\midrule
+\multicolumn{2}{@{}l}{Paire de modèles (Spearman $\rho$)} & Article & \multicolumn{2}{c}{$w^*$ par modèle} & moyenne brute \\
+\midrule
+\multicolumn{2}{@{}l}{Gemini / GPT-4o}  & 0,33 & \multicolumn{2}{c}{0,828} & 0,795 \\
+\multicolumn{2}{@{}l}{Copilot / GPT-4o} & 0,43 & \multicolumn{2}{c}{0,900} & 0,900 \\
+\multicolumn{2}{@{}l}{Gemini / Copilot} & 0,53 & \multicolumn{2}{c}{0,921} & 0,921 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Collecte auprès des modèles open source}
+
+Les 240 appels ($3$ modèles $\times$ $4$ profils $\times$ $20$ agents) ont tous produit une réponse valide dès le premier essai : grâce à la sortie contrainte par schéma JSON, aucun nouvel essai n'a été nécessaire. La collecte a duré environ 37 minutes (36 minutes entre la première et la dernière réponse), soit environ 13 minutes pour Llama~3.1, 11 pour Qwen2.5 et 12 pour Mistral, sans aucun coût d'utilisation et sans transmission de données à un tiers. Le tableau~\ref{tab:os-modeles} résume les statistiques par modèle.
+
+\begin{table}[htbp]
+\centering
+\caption{Statistiques de la collecte open source par modèle ($m=20$ agents, 4 profils, 9 critères ; 720 poids par modèle).}
+\label{tab:os-modeles}
+\small
+\begin{tabular}{@{}l cc cc cc@{}}
+\toprule
+& \multicolumn{2}{c}{Filtre IQR} & \multicolumn{2}{c}{Écart-type moyen (corrigé)} & \multicolumn{2}{c}{Comparaison à~\cite{vahidnia}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}
+Modèle & rejets & IQR nul & avant IQR & après IQR & Spearman $\rho$ & MAE \\
+\midrule
+Llama 3.1 8B & 77 (10,7~\%) & 5  & 1,068 & 0,669 & $-0{,}050$ & 2,560 \\
+Mistral 7B   & 43 (6,0~\%)  & 18 & 0,451 & 0,303 & $-0{,}233$ & 1,815 \\
+Qwen2.5 7B   & 19 (2,6~\%)  & 3  & 1,013 & 0,942 & $-0{,}100$ & 2,358 \\
+\midrule
+Ensemble     & 139 (6,4~\%) & 26 & -- & -- & $-0{,}100$ & 2,058 \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\footnotesize « IQR nul » : nombre de couples (profil, critère), sur 36 par modèle, pour lesquels $Q_1=Q_3$.}
+\end{table}
+
+\paragraph{Distribution des poids} La figure~\ref{fig:heatmap} montre les poids moyens bruts par critère, profil et modèle. Deux traits dominent. D'une part, les modèles utilisent l'échelle différemment : Mistral attribue des poids élevés à presque tous les critères (moyenne par profil comprise entre 7,06 et 7,16) et varie peu d'un agent à l'autre, alors que Llama~3.1 (5,03 à 5,22) et Qwen2.5 (5,43 à 5,96) exploitent davantage l'échelle, avec une plus grande dispersion entre agents. D'autre part, à l'intérieur d'un même modèle, les quatre colonnes (profils) sont presque identiques : le rôle d'expert demandé modifie très peu les poids.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\linewidth]{figures/os_heatmap_poids_moyens.png}
+\caption{Poids moyens bruts (avant filtrage) par critère et par profil, pour chacun des trois modèles open source.}
+\label{fig:heatmap}
+\end{figure}
+
+\paragraph{Filtre IQR} Le filtre écarte 139 poids sur 2\,160 (6,4~\%), soit près de deux fois plus que sur les données de l'étude originale, surtout pour Llama~3.1 (77 rejets) et pour le profil géographie et SIG (53 rejets, contre 24 à 38 pour les autres profils). Son effet sur les poids finaux reste limité mais n'est plus négligeable : $\max_i|\Delta w^*_i|=0{,}26$, contre 0,054 sur les données originales.
+
+\paragraph{Similarité entre modèles} Les classements des trois modèles sont assez proches : $\rho=0{,}983$ entre Llama~3.1 et Qwen2.5, $0{,}800$ entre Mistral et Qwen2.5 et $0{,}750$ entre Llama~3.1 et Mistral.
+
+\subsection{Poids finaux et comparaison avec l'étude originale}
+
+Le tableau~\ref{tab:poids-os} donne les poids finaux open source ($\alpha=0{,}5$), avec leur intervalle bootstrap et, pour comparaison, les poids et rangs de l'étude originale ; la figure~\ref{fig:poids-os} les représente.
+
+\begin{table}[htbp]
+\centering
+\caption{Poids finaux open source ($\alpha=0{,}5$), intervalle de confiance bootstrap à 95~\% (une seule série de graines), et poids de l'étude originale.}
+\label{tab:poids-os}
+\small
+\begin{tabular}{@{}cl ccc c cc@{}}
+\toprule
+& & \multicolumn{4}{c}{Open source (ce travail)} & \multicolumn{2}{c}{Étude originale} \\
+\cmidrule(lr){3-6}\cmidrule(l){7-8}
+Rang & Critère & $w_i^*$ & IC 95~\% & $\hat w_i$ & rang conservé & $w_i^*$ & rang \\
+\midrule
+1 & Aquifères et eaux de surface        & 8,47 & [8,40 ; 8,52] & 0,160 & 100~\% & 4,90 & 7 \\
+2 & Sensibilité écologique              & 8,21 & [8,07 ; 8,31] & 0,155 & 100~\% & 6,28 & 4 \\
+3 & Géologie                            & 7,67 & [7,57 ; 7,83] & 0,145 & 100~\% & 4,40 & 8 \\
+4 & Conformité réglementaire            & 6,36 & [6,31 ; 6,62] & 0,120 & 100~\% & 7,56 & 1 \\
+5 & Conditions climatiques              & 6,04 & [5,90 ; 6,15] & 0,114 & 100~\% & 5,09 & 6 \\
+6 & Zones habitées et centres urbains   & 5,01 & [4,78 ; 5,14] & 0,095 & 100~\% & 7,11 & 2 \\
+7 & Pente                               & 4,14 & [3,94 ; 4,28] & 0,078 & 100~\% & 5,88 & 5 \\
+8 & Topographie                         & 3,69 & [3,41 ; 3,85] & 0,070 & 97,2~\% & 4,03 & 9 \\
+9 & Développement urbain et infrastr.   & 3,36 & [3,09 ; 3,60] & 0,063 & 97,2~\% & 6,80 & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\linewidth]{figures/os_poids_finaux.png}
+\caption{Poids finaux open source $w^*$ ($\alpha=0{,}5$). Les barres d'erreur sont des intervalles à 95~\% obtenus par bootstrap sur les agents ($B=1\,000$), pour une seule série de graines.}
+\label{fig:poids-os}
+\end{figure}
+
+\paragraph{Stabilité} À l'intérieur de notre collecte, le classement est très stable : sept critères conservent leur rang dans tous les rééchantillonnages, et les deux derniers (topographie, développement urbain), proches l'un de l'autre, échangent leurs places dans 2,8~\% des cas. Les intervalles sont étroits (de 0,12 à 0,51 point), mais plus larges que sur les données originales (0,13 à 0,19 point), en raison d'une plus forte dispersion entre agents.
+
+\paragraph{Comparaison avec l'étude originale} En revanche, nos poids sont très différents de ceux de l'étude originale (figure~\ref{fig:comparaison}) : $\rho=-0{,}10$, $\tau=-0{,}056$ et $\mathrm{MAE}=2{,}06$ point sur l'échelle de 1 à 9. Aucun des trois modèles pris isolément ne s'en rapproche ($\rho$ entre $-0{,}23$ et $-0{,}05$, tableau~\ref{tab:os-modeles}). Les écarts les plus marqués concernent les aquifères ($+3{,}58$ ; rang 1 contre 7), le développement urbain ($-3{,}44$ ; rang 9 contre 3), la géologie ($+3{,}26$ ; rang 3 contre 8) et les zones habitées ($-2{,}10$ ; rang 6 contre 2). Les modèles open source privilégient donc les critères environnementaux et physiques, tandis que les modèles propriétaires privilégiaient les critères réglementaires et humains.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\linewidth]{figures/os_comparaison_reference.png}
+\caption{Poids finaux $w^*$ par critère : ensemble open source (« Données »), étude originale (« Référence ») et chacun des trois modèles open source pris isolément.}
+\label{fig:comparaison}
+\end{figure}
+
+\subsection{Consensus et différenciation des profils}
+
+Sur nos données, le coefficient de concordance initial vaut déjà $W_K^{(0)}=0{,}983$ (0,997 avec la variante du script original), contre 0,433 sur les données de l'étude originale : avant toute négociation, les quatre profils classent les critères presque de la même façon. La sensibilité au retrait d'un profil le confirme (figure~\ref{fig:sensibilite}) : la variation maximale des poids finaux est de 0,06 point (ENR), 0,13 (GGIS), 0,14 (CEUP) et 0,15 (ES), soit 4 à 17 fois moins que sur les données originales (0,52 à 1,04). Bien que le prompt demande explicitement de refléter les priorités propres à chaque domaine, les modèles open source testés différencient très peu les rôles d'experts.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\linewidth]{figures/os_sensibilite_profils.png}
+\caption{Variation des poids finaux open source lorsqu'un profil est retiré du panel ($\Delta w^*=w^*_{\text{sans profil}}-w^*_{\text{complet}}$). L'échelle verticale ne dépasse pas $\pm0{,}15$ point.}
+\label{fig:sensibilite}
+\end{figure}
+
+\subsection{Convergence et sensibilité à \texorpdfstring{$\alpha$}{alpha}}
+
+Partant d'un accord déjà presque parfait, la négociation converge en 2, 3 et 4 itérations pour $\alpha=0{,}3$, $0{,}5$ et $0{,}7$ (tableau~\ref{tab:convergence} et figure~\ref{fig:convergence-os}). Sur l'ensemble de la grille, elle s'arrête après 2 à 4 itérations. Dans les deux jeux de données, l'écart entre $w^*$ et la moyenne simple des profils est de $1{,}8\times10^{-15}$, conformément à l'équation~\eqref{eq:conservation} : la valeur de $\alpha$ ne change que le nombre d'itérations, jamais les poids finaux.
+
+\begin{table}[htbp]
+\centering
+\caption{Concordance initiale et nombre d'itérations jusqu'à l'arrêt ($\varepsilon=10^{-4}$).}
+\label{tab:convergence}
+\small
+\begin{tabular}{@{}l cc ccc@{}}
+\toprule
+& \multicolumn{2}{c}{$W_K^{(0)}$} & \multicolumn{3}{c}{Itérations} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-6}
+Données & standard & variante & $\alpha=0{,}3$ & $\alpha=0{,}5$ & $\alpha=0{,}7$ \\
+\midrule
+Étude originale (GPT-4o, Gemini, Copilot) & 0,433 & 0,858 & 4 & 5 & 9 \\
+Open source (Llama 3.1, Qwen2.5, Mistral) & 0,983 & 0,997 & 2 & 3 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.49\linewidth]{figures/os_kendall_W_t.png}\hfill
+\includegraphics[width=0.49\linewidth]{figures/os_iterations_vs_alpha.png}
+\caption{Convergence de la négociation sur les données open source. À gauche : $W_K(t)$ pour trois valeurs de $\alpha$. À droite : nombre d'itérations jusqu'à l'arrêt pour la grille $\alpha\in\{0{,}05;\dots;0{,}95\}$.}
+\label{fig:convergence-os}
+\end{figure}
+
+\paragraph{Arrêts prématurés} La grille fait apparaître un défaut du critère d'arrêt~\eqref{eq:arret}. Comme $W_K$ ne dépend que des rangs, il reste constant tant qu'aucun profil ne change l'ordre de ses critères, et la condition $|W_K^{(t+1)}-W_K^{(t)}|<\varepsilon$ peut être satisfaite sans que l'accord soit atteint. Sur nos données, l'arrêt se produit avec $W_K=0{,}994$ pour $\alpha\in\{0{,}65;\,0{,}75;\,0{,}80\}$ et $W_K=0{,}988$ pour $\alpha\ge0{,}85$. Sur les données originales, le cas est plus net : $W_K$ s'arrête à 0,988 pour $\alpha\in\{0{,}75;\,0{,}80;\,0{,}85\}$, et pour $\alpha\in\{0{,}90;\,0{,}95\}$ la négociation s'arrête dès la première itération avec $W_K=0{,}433$, c'est-à-dire sans aucun rapprochement des classements. Les poids finaux, égaux à la moyenne, n'en sont pas affectés.
+
+\subsection{Biais de position}\label{sec:biais}
+
+Dans la collecte principale, les critères sont toujours présentés dans l'ordre alphabétique. La figure~\ref{fig:biais} montre le poids moyen attribué selon la position du critère dans le prompt : il décroît nettement de la première à la dernière position pour Llama~3.1 et Qwen2.5, et dans une moindre mesure pour Mistral, qui reste à des niveaux élevés. La corrélation par réponse $\rho_{\mathrm{pos}}$ (équation~\eqref{eq:rhopos}) est positive pour les 240 réponses, sans exception (tableau~\ref{tab:biais}), avec une moyenne de 0,80 (minimum 0,32, maximum 0,98).
+
+\begin{table}[htbp]
+\centering
+\caption{Biais de position dans la collecte principale (ordre alphabétique identique pour tous les agents).}
+\label{tab:biais}
+\small
+\begin{tabular}{@{}l ccc@{}}
+\toprule
+Modèle & $\rho_{\mathrm{pos}}$ moyen & réponses avec $\rho_{\mathrm{pos}}>0$ & nombre de réponses \\
+\midrule
+Llama 3.1 8B & 0,709 & 100~\% & 80 \\
+Mistral 7B   & 0,847 & 100~\% & 80 \\
+Qwen2.5 7B   & 0,852 & 100~\% & 80 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\linewidth]{figures/os_biais_position.png}
+\caption{Poids moyen attribué selon la position du critère dans la liste du prompt (1 = cité en premier), par modèle. L'ordre étant le même pour tous les agents, la position $k$ correspond toujours au même critère (ordre alphabétique : aquifères, climat, sensibilité écologique, géologie, conformité réglementaire, zones habitées, pente, topographie, développement urbain).}
+\label{fig:biais}
+\end{figure}
+
+Le classement final reflète cette tendance : la corrélation de Spearman entre $w^*$ et l'ordre alphabétique des critères vaut 0,90 sur nos données, contre $-0{,}18$ sur les données de l'étude originale. Le premier critère de la liste (aquifères) arrive en tête et le dernier (développement urbain) en dernière position. La décroissance n'est toutefois pas parfaite : les conditions climatiques, en deuxième position, reçoivent des poids nettement plus faibles que leurs voisins chez Llama~3.1 et Qwen2.5. Surtout, l'ordre étant identique pour tous les agents, la position et l'identité du critère sont ici entièrement confondues : ces données ne permettent pas de savoir si les aquifères sont jugés importants parce qu'ils le sont, ou parce qu'ils sont cités en premier. C'est l'objet de l'expérience de contrôle.
+
+\subsection{Expérience de contrôle : ordre aléatoire des critères}\label{sec:controle}
+
+\paragraph{Plan d'expérience} Pour séparer l'effet de la position de celui du critère, nous répétons la collecte du niveau 0 à l'identique (mêmes modèles et empreintes, même version d'Ollama, température 0,7, graine $s$ pour l'agent $s$ et $+1000$ par nouvel essai, $r=3$, $m=20$, même gabarit de prompt), avec une seule différence : pour chaque agent $s$, l'ordre des critères est une permutation $\pi_s$ tirée au hasard par un générateur pseudo-aléatoire initialisé avec la graine de l'agent. Cette permutation est appliquée à la fois à la liste des critères dans le prompt et à l'ordre des propriétés du schéma JSON, et elle est enregistrée (champ \code{order}) dans \code{raw/responses.jsonl}. Les poids sont ensuite remis dans l'ordre canonique avant l'écriture des fichiers CSV, de sorte que les niveaux 1 et 2 et l'ensemble des indicateurs s'appliquent sans modification (commande : \code{scripts/collect.py -{}-shuffle -{}-out data/opensource\_shuffle}). Comme la graine ne dépend que de $s$, les 20 permutations sont partagées par les 12 couples (modèle, profil) : chaque critère occupe des positions variées d'un agent à l'autre, et toute différence entre modèles ou profils ne peut pas venir de l'ordre de présentation.
+
+\paragraph{Prédictions} S'il n'y a pas de biais de position, $\rho_{\mathrm{pos}}$ calculé avec l'ordre réellement présenté doit être centré sur 0, la courbe du poids moyen selon la position doit être plate, et les poids finaux doivent rester proches de ceux de la collecte principale ($\rho$ élevé, MAE faible). Si les poids reflètent surtout la position, $\rho_{\mathrm{pos}}$ restera positif, les poids des critères tendront à s'égaliser (chaque critère étant tantôt au début, tantôt à la fin), et la corrélation entre $w^*$ et l'ordre alphabétique devrait chuter. Le tableau~\ref{tab:controle} rassemble les indicateurs à comparer.
+
+\begin{table}[htbp]
+\centering
+\caption{Indicateurs de l'expérience de contrôle. La colonne « collecte principale » reprend les résultats des sections précédentes.}
+\label{tab:controle}
+\small
+\begin{tabular}{@{}l cc@{}}
+\toprule
+Indicateur & Principale (ordre fixe) & Contrôle (ordre aléatoire) \\
+\midrule
+$\rho_{\mathrm{pos}}$ moyen (Llama / Mistral / Qwen) & 0,709 / 0,847 / 0,852 & 0,343 / 0,295 / 0,543 \\
+Réponses avec $\rho_{\mathrm{pos}}>0$ & 100~\% & 85~\% (81 / 75 / 99~\%) \\
+Spearman($w^*$, ordre alphabétique) & 0,90 & 0,52 \\
+$\rho$ / MAE de $w^*$ vs collecte principale & -- & 0,82 / 0,89 \\
+$\rho$ / MAE de $w^*$ vs étude originale & $-0{,}10$ / 2,06 & 0,10 / 1,50 \\
+$W_K^{(0)}$ & 0,983 & 0,944 \\
+Retrait d'un profil, $\max|\Delta w^*|$ & $\le 0{,}15$ & $\le 0{,}16$ \\
+Poids écartés par le filtre IQR & 6,4~\% & 3,1~\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Résultats}
+Les 240 réponses de la collecte de contrôle sont toutes valides au premier essai. Le biais de position persiste lorsque l'ordre est aléatoire : calculé avec l'ordre réellement présenté à chaque agent, $\rho_{\mathrm{pos}}$ reste positif pour 85~\% des réponses (81~\% pour Llama~3.1, 75~\% pour Mistral, 99~\% pour Qwen2.5), avec une moyenne de 0,30 à 0,54 selon le modèle, et le poids moyen décroît régulièrement de 7,56 pour le critère cité en premier à 5,15 pour le dernier (figure~\ref{fig:controle}). L'effet est toutefois nettement plus faible qu'avec l'ordre fixe, où la position et l'identité du critère se renforçaient.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\linewidth]{figures/ctl_biais_position.png}
+\caption{Expérience de contrôle : poids moyen selon la position du critère dans le prompt, l'ordre étant tiré au hasard pour chaque agent. La position $k$ ne correspond plus à un critère fixe.}
+\label{fig:controle}
+\end{figure}
+
+Pour séparer les deux effets, nous ajustons pour chaque modèle une régression linéaire du poids sur deux variables qualitatives, le critère et la position\footnote{Chaque variable est codée par des indicatrices (une colonne 0/1 par modalité) ; le $R^2$ est la part de la variance des poids expliquée par le modèle de régression.} (tableau~\ref{tab:decomp}). Sur l'ensemble des réponses, le critère explique 32~\% de la variance des poids et la position 15~\% ; chez Qwen2.5, la position (31~\%) pèse même davantage que le critère (28~\%).
+
+\begin{table}[htbp]
+\centering
+\caption{Part de la variance des poids ($R^2$) expliquée par le critère, par la position dans le prompt, et par les deux (expérience de contrôle, 2\,160 poids).}
+\label{tab:decomp}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Modèle & Critère & Position & Critère + position \\
+\midrule
+Llama 3.1 8B & 0,439 & 0,141 & 0,542 \\
+Mistral 7B & 0,579 & 0,110 & 0,697 \\
+Qwen2.5 7B & 0,283 & 0,315 & 0,552 \\
+Ensemble & 0,316 & 0,154 & 0,443 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Les poids finaux du contrôle restent proches de ceux de la collecte principale ($\rho=0{,}82$, MAE de 0,89 point) : les aquifères (8,13) et la sensibilité écologique (7,95) restent en tête, ce qui traduit une préférence propre des modèles pour les critères environnementaux. Les critères pénalisés par une position tardive remontent nettement : développement urbain de 3,36 à 5,00, topographie de 3,69 à 5,31, pente de 4,14 à 5,33, et l'étendue des poids se resserre (de 3,36--8,47 à 4,93--8,13). Le classement reste éloigné de celui de l'étude originale ($\rho=0{,}10$, MAE de 1,50 point, contre $-0{,}10$ et 2,06), et les profils restent peu différenciés ($W_K^{(0)}=0{,}944$, retrait d'un profil $\le0{,}16$ point). Enfin, pour $\alpha=0{,}7$, la négociation s'arrête après trois itérations avec $W_K=0{,}956$ : nouvel exemple d'arrêt prématuré (section~\ref{sec:discussion}).
+
+% ================================================================ 7
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Réponses aux sous-questions}
+
+\paragraph{1. Concevoir le processus} La chaîne complète, du prompt aux poids numériques, est réalisable avec des moyens modestes. La sortie contrainte par schéma JSON a rendu l'extraction triviale (240 réponses valides sur 240 au premier essai), et la collecte a pris environ 37 minutes sur un ordinateur portable, sans coût d'utilisation. La journalisation systématique (empreintes, graines, prompts, réponses brutes) rend chaque poids traçable jusqu'à la réponse qui l'a produit. La formulation du prompt reste cependant le point le plus délicat : un détail apparemment anodin, l'ordre d'énumération des critères, influence fortement les réponses (sous-question 5).
+
+\paragraph{2. Consensus significatif ou artefact} La convergence est essentiellement une propriété de construction. La mise à jour~\eqref{eq:maj} conserve la moyenne~\eqref{eq:conservation} et contracte les écarts en $\alpha^t$~\eqref{eq:contraction} : $W_K$ tend vers 1 quelles que soient les données, y compris pour des poids tirés au hasard (test du tableau~\ref{tab:tests}), et les poids finaux sont égaux, à $10^{-15}$ près, à la simple moyenne des profils. La négociation n'ajoute donc aucune information : elle aboutit au même résultat qu'une moyenne directe. Le $W_K$ est un indicateur de suivi de la convergence, pas une validation : seul $W_K^{(0)}$, calculé avant toute négociation, mesure un accord réel entre profils. De plus, le critère d'arrêt fondé sur $|\Delta W_K|$ peut s'arrêter avant tout rapprochement des classements (dès la première itération avec $W_K=0{,}433$ pour $\alpha\ge0{,}9$ sur les données originales). Quant au filtre IQR, son effet sur les poids finaux reste modeste (0,054 point sur les données originales, 0,26 sur les nôtres).
+
+\paragraph{3. Cohérence et stabilité} À l'intérieur d'une collecte, les poids sont stables : le bootstrap conserve le rang de sept critères dans 100~\% des cas et des deux autres dans 97,2~\%. Les trois modèles open source s'accordent entre eux ($\rho$ de 0,75 à 0,98), mais utilisent l'échelle différemment (Mistral attribue des poids élevés à presque tout). En revanche, les profils d'experts ne se différencient presque pas ($W_K^{(0)}=0{,}983$, retrait d'un profil $\le0{,}15$ point), alors qu'ils le faisaient nettement avec les modèles propriétaires ($W_K^{(0)}=0{,}433$, jusqu'à 1,04 point). Avec de petits modèles, le jeu de rôle « expert de tel domaine » est peu suivi : la diversité de points de vue qui justifie le panel n'est pas au rendez-vous.
+
+\paragraph{4. Comparaison avec les modèles propriétaires} Les pondérations ne sont pas comparables : $\rho=-0{,}10$ et MAE de 2,06 points avec l'étude originale, aucun modèle isolé ne faisant mieux. Les modèles open source mettent en avant les aquifères, la sensibilité écologique et la géologie ; les modèles propriétaires, la conformité réglementaire, les zones habitées et le développement urbain. En l'absence de vérité terrain, aucun des deux classements ne peut être déclaré correct. Le gain en reproductibilité est en revanche réel : modèles figés par leur empreinte, graines et réponses brutes conservées, exécution locale gratuite et sans transmission de données. Le contraste est d'autant plus net que deux séries de valeurs de l'article (écarts-types par modèle, corrélations entre modèles) ne peuvent pas être retrouvées à partir de ses propres données publiées (tableau~\ref{tab:nonrepro}), alors que ses poids finaux, eux, sont retrouvés par notre code.
+
+\paragraph{5. Limites : transparence, biais, contexte, validation} Le résultat le plus préoccupant est le biais de position : dans la collecte principale, toutes les réponses attribuent en moyenne des poids plus élevés aux critères cités en premier ($\rho_{\mathrm{pos}}$ de 0,71 à 0,85 selon le modèle), et le classement final suit l'ordre alphabétique ($\rho=0{,}90$). Ce phénomène est connu pour les LLM employés comme évaluateurs~\cite{zheng}. Il signifie qu'une partie au moins du classement open source peut refléter la forme du prompt plutôt qu'un jugement d'expert.
+L'expérience de contrôle confirme qu'il s'agit d'un effet propre de la forme du prompt : avec un ordre aléatoire, les critères cités en premier reçoivent encore en moyenne 2,4 points de plus que les derniers, et la position explique 15~\% de la variance des poids (31~\% pour Qwen2.5). Elle montre aussi que cet effet ne suffit pas à expliquer l'écart avec l'étude originale : la préférence pour les critères environnementaux subsiste, et la corrélation avec le classement de référence ne dépasse pas 0,10. Tirer l'ordre au hasard pour chaque agent neutralise le biais en moyenne, sans le supprimer réponse par réponse.
+Par ailleurs, le prompt ne contient aucune information sur le territoire étudié (« the selection of a landfill site », sans région ni données) : les poids produits sont génériques et ne peuvent pas refléter un contexte géographique particulier. Enfin, aucune validation par des experts humains n'a été possible.
+
+\subsection{Le \texorpdfstring{$W$}{W} de Kendall : un indicateur de suivi, pas une validation}
+
+Il découle de ce qui précède que la valeur finale $W_K=1$ ne doit pas être présentée comme la preuve d'un consensus. Elle est atteinte par construction, quelles que soient les données, et la négociation ne modifie pas les poids finaux. Deux usages restent légitimes : rapporter $W_K^{(0)}$, qui mesure l'accord initial réel entre profils, et utiliser $W_K(t)$ pour suivre la convergence. Si l'on souhaite conserver l'étape de négociation, un critère d'arrêt portant sur les poids eux-mêmes (par exemple $\max_{e,i}|\Wbar_e^{(t)}[i]-\Wmoy[i]|<\varepsilon$) éviterait les arrêts prématurés observés ; plus simplement, on peut rapporter directement la moyenne des profils et leur dispersion. Par ailleurs, la variante de $W_K$ calculée par le script original (0,858 au lieu de 0,433) surestime fortement l'accord initial, ce qui renforce l'impression d'un consensus préexistant.
+
+\subsection{Limites}\label{sec:limites}
+
+\begin{itemize}
+  \item \textbf{Une seule série de graines.} La collecte n'a été réalisée qu'une fois ; la stabilité est estimée par bootstrap sur les agents, qui n'est qu'une approximation de la variabilité d'une collecte répétée avec d'autres graines.
+  \item \textbf{Pas de vérité terrain humaine.} Ni les poids open source ni ceux des modèles propriétaires n'ont été confrontés à l'avis d'experts humains ; on ne peut donc pas dire lesquels sont les meilleurs.
+  \item \textbf{Pas de carte d'aptitude.} Les poids n'ont pas été appliqués à des couches géographiques réelles ; leur effet sur les zones retenues n'est pas mesuré.
+  \item \textbf{Petits modèles quantifiés.} Les modèles de 7 à 8 milliards de paramètres en 4 bits ont été choisis pour tourner sur un ordinateur portable ; des modèles plus grands pourraient mieux suivre les rôles d'experts et être moins sensibles à l'ordre.
+  \item \textbf{Un seul cas d'étude et un seul prompt.} Les conclusions portent sur le problème de la décharge, avec un prompt en anglais et un ordre de critères donné.
+  \item \textbf{Biais de position.} L'ordre aléatoire neutralise le biais en moyenne sur les agents, mais chaque réponse reste influencée par l'ordre présenté ; avec seulement 20 permutations partagées par tous les couples (modèle, profil), l'équilibrage des positions par critère n'est qu'approximatif.
+\end{itemize}
+
+\subsection{Perspectives}
+
+Plusieurs prolongements découlent directement de ces limites : présenter les critères dans un ordre aléatoire par agent par défaut (ou moyenner sur plusieurs ordres) ; répéter la collecte avec plusieurs séries de graines ; tester des modèles plus grands et d'autres familles ; enrichir le prompt d'informations sur le territoire étudié ; faire produire aux agents des comparaisons par paires (AHP) ou de type BWM plutôt qu'une notation directe ; confronter les poids à ceux d'un panel d'experts humains ; et produire les cartes d'aptitude dans un SIG pour mesurer l'effet concret des différences de pondération.
+
+% ================================================================ 8
+\section{Conclusion}\label{sec:conclusion}
+
+Ce travail a mis en œuvre la méthode WALMAS de pondération collaborative des critères avec trois modèles open source exécutés localement, sur le cas de la sélection d'un site de décharge. Appliquée aux données publiées de l'étude originale, l'implémentation retrouve ses poids finaux publiés, et la collecte open source s'est révélée rapide, gratuite, entièrement traçable et sans échec de format.
+
+Sur le fond, les résultats invitent à la prudence. La négociation ne modifie pas les poids, qui sont égaux à la moyenne des profils, et le $W$ de Kendall converge vers 1 par construction : il suit la convergence sans valider le consensus. Les modèles open source produisent des poids stables mais très différents de ceux des modèles propriétaires, différencient à peine les profils d'experts, et attribuent les poids les plus élevés aux critères cités en premier dans la consigne.
+Une expérience de contrôle avec un ordre aléatoire des critères confirme ce biais de position, sans qu'il suffise à expliquer l'écart avec l'étude originale : les modèles conservent une préférence propre pour les critères environnementaux.
+Un système multi-agents de LLM open source peut donc fournir rapidement une première pondération reproductible et documentée, mais pas, en l'état, remplacer des experts humains : il peut au mieux les compléter, à condition de contrôler la forme du prompt, de rapporter la dispersion plutôt qu'un consensus apparent, et de confronter les résultats à des jugements humains et à leur traduction cartographique.
+
+% ================================================================ Références
+\begin{thebibliography}{99}
+\setlength{\itemsep}{2pt}
+\small
+
+\bibitem{vahidnia} M. H. Vahidnia, \emph{Multi-agent systems of large language models as weight assigners: An approach to collaborative weighting in spatial multi-criteria decision-making}, Geomatica, vol.~77, 100071, 2025. \url{https://doi.org/10.1016/j.geomat.2025.100071}
+
+\bibitem{saaty} T. L. Saaty, \emph{The Analytic Hierarchy Process}, McGraw-Hill, 1980.
+
+\bibitem{rezaei} J. Rezaei, Best-worst multi-criteria decision-making method, \emph{Omega}, vol.~53, pp.~49--57, 2015.
+
+\bibitem{kendall} M. G. Kendall et B. B. Smith, The problem of $m$ rankings, \emph{The Annals of Mathematical Statistics}, vol.~10, no.~3, pp.~275--287, 1939.
+
+\bibitem{tukey} J. W. Tukey, \emph{Exploratory Data Analysis}, Addison-Wesley, 1977.
+
+\bibitem{masllms} M. H. Vahidnia, \emph{MAS-LLMs : code et données}, dépôt GitHub, \url{https://github.com/mhvahidnia/MAS-LLMs}, consulté en octobre 2026.
+
+\bibitem{spearman} C. Spearman, The proof and measurement of association between two things, \emph{The American Journal of Psychology}, vol.~15, no.~1, pp.~72--101, 1904.
+
+\bibitem{efron} B. Efron, Bootstrap methods: another look at the jackknife, \emph{The Annals of Statistics}, vol.~7, no.~1, pp.~1--26, 1979.
+
+\bibitem{ollama} Ollama, logiciel d'exécution locale de modèles de langage, \url{https://github.com/ollama/ollama}, version 0.40.15.
+
+\bibitem{llama3} Llama Team (Meta AI), \emph{The Llama 3 Herd of Models}, \NoAutoSpacing{arXiv:2407.21783}, 2024. Modèle utilisé : Llama~3.1 8B Instruct, étiquette Ollama \code{llama3.1:8b}.
+
+\bibitem{qwen25} Qwen Team, \emph{Qwen2.5 Technical Report}, \NoAutoSpacing{arXiv:2412.15115}, 2024. Modèle utilisé : Qwen2.5 7B Instruct, étiquette Ollama \code{qwen2.5:7b}.
+
+\bibitem{mistral} A. Q. Jiang et al., \emph{Mistral 7B}, \NoAutoSpacing{arXiv:2310.06825}, 2023. Modèle utilisé : Mistral 7B Instruct, étiquette Ollama \code{mistral:7b}.
+
+\bibitem{zheng} L. Zheng et al., Judging LLM-as-a-judge with MT-Bench and Chatbot Arena, \emph{Advances in Neural Information Processing Systems (NeurIPS), Datasets and Benchmarks Track}, 2023. \NoAutoSpacing{arXiv:2306.05685}.
+
+\end{thebibliography}
+
+\end{document}
