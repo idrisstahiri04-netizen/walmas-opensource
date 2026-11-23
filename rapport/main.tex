@@ -495,7 +495,7 @@ Une interface Streamlit\footnote{Streamlit est une bibliothèque Python qui perm
   \node[md=n0] (ag) at (0,-1.9) {{\footnotesize\ttfamily\bfseries llm/agents.py}\quad Niveau 0\\ prompts, schéma JSON, appels HTTP,\\ validation, essais, journalisation};
   \node[dt] (dos) at (-5.3,-3.8) {{\footnotesize\ttfamily\bfseries data/opensource/}\\ 12 CSV $9\times20$ + \code{raw/responses.jsonl}\\ + \code{run\_config.json}};
   \node[md=n2!50!n0] (pip) at (0,-3.8) {{\footnotesize\ttfamily\bfseries core/pipeline.py}\\ chargement des CSV,\\ enchaînement des niveaux 1--2};
-  \node[box=4.1cm, dashed, draw=gin] (tst) at (5.3,-3.8) {{\footnotesize\ttfamily\bfseries tests/} + intégration continue\\ 40 tests \code{pytest} (GitHub Actions)\\ client Ollama simulé, sans réseau};
+  \node[box=4.1cm, dashed, draw=gin] (tst) at (5.3,-3.8) {{\footnotesize\ttfamily\bfseries tests/} + intégration continue\\ 41 tests \code{pytest} (GitHub Actions)\\ client Ollama simulé, sans réseau};
   \node[md=n1] (iq) at (-5.3,-5.7) {{\footnotesize\ttfamily\bfseries core/iqr.py}\quad Niveau 1\\ filtre de Tukey (éq.~\ref{eq:iqr}--\ref{eq:wprime})};
   \node[md=n2] (ng) at (0,-5.7) {{\footnotesize\ttfamily\bfseries core/negotiation.py}\quad Niveau 2\\ négociation (éq.~\ref{eq:moy}--\ref{eq:arret})};
   \node[md=n2] (kd) at (5.3,-5.7) {{\footnotesize\ttfamily\bfseries core/kendall.py}\quad Niveau 2\\ $W_K$ standard (éq.~\ref{eq:kendall})\\ + variante du script original};
@@ -568,11 +568,11 @@ Un point de vigilance concerne le filtrage IQR : lorsque les agents sont presque
 
 \subsection{Validation du code}\label{sec:tests}
 
-La validation repose sur 40 tests automatisés\footnote{Un test automatisé est un petit programme qui exécute une partie du code sur un cas connu et vérifie que le résultat est celui attendu ; on les relance à chaque modification.} (16 pour le cœur, 14 pour le niveau 0, 7 pour les indicateurs, 3 pour l'application), résumés dans le tableau~\ref{tab:tests} et exécutés à chaque modification par intégration continue\footnote{L'intégration continue relance automatiquement l'installation et l'ensemble des tests sur un serveur (ici GitHub Actions, Python 3.11) à chaque envoi de code.}. Les tests du niveau 0 remplacent Ollama par un faux client qui renvoie des réponses prédéfinies, sans accès au réseau.
+La validation repose sur 41 tests automatisés\footnote{Un test automatisé est un petit programme qui exécute une partie du code sur un cas connu et vérifie que le résultat est celui attendu ; on les relance à chaque modification.} (16 pour le cœur, 14 pour le niveau 0, 8 pour les indicateurs, 3 pour l'application), résumés dans le tableau~\ref{tab:tests} et exécutés à chaque modification par intégration continue\footnote{L'intégration continue relance automatiquement l'installation et l'ensemble des tests sur un serveur (ici GitHub Actions, Python 3.11) à chaque envoi de code.}. Les tests du niveau 0 remplacent Ollama par un faux client qui renvoie des réponses prédéfinies, sans accès au réseau.
 
 \begin{table}[htbp]
 \centering
-\caption{Principaux tests de validation (40 tests \code{pytest}).}
+\caption{Principaux tests de validation (41 tests \code{pytest}).}
 \label{tab:tests}
 \small
 \begin{tabular}{@{}p{4.3cm}p{10.9cm}@{}}
